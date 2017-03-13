@@ -1,0 +1,95 @@
+%!TeX program = xelatex
+%
+% O MODELO DESTE DOCUMENTO É abntex2-modelo-trabalho-academico.tex
+% HÁ MAIS SEÇÕES NO MODELO DO QUE NESTE ARQUIVO AQUI.
+% É PARA CONSTRUIR AOS POUCOS.
+%
+%
+\documentclass[
+	% -- opções da classe memoir --
+	12pt,				% tamanho da fonte
+	openright,			% capítulos começam em pág ímpar (insere página vazia caso preciso)
+	twoside,			% para impressão em recto e verso. Oposto a oneside
+	a4paper,			% tamanho do papel. 
+	% -- opções da classe abntex2 --
+	%chapter=TITLE,		% títulos de capítulos convertidos em letras maiúsculas
+	%section=TITLE,		% títulos de seções convertidos em letras maiúsculas
+	%subsection=TITLE,	% títulos de subseções convertidos em letras maiúsculas
+	%subsubsection=TITLE,% títulos de subsubseções convertidos em letras maiúsculas
+	% -- opções do pacote babel --
+	english,			% idioma adicional para hifenização
+	brazil				% o último idioma é o principal do documento
+	]{abntex2}
+
+\usepackage{_estilos}
+
+% ====================================================================================================================================
+% ---
+% Informações de dados para CAPA e FOLHA DE ROSTO
+% ---
+\titulo{Metodologia da segurança da informação na linguagem Javascript nos ambientes de execução em navegadores}
+\autor{Humberto Borgas Bulhões}
+\local{São Paulo}
+\data{2017}
+\mes{Fevereiro}
+\orientador{Marcelo Novaes de Rezende}
+\instituicao{\mbox{Instituto} de Pesquisas Tecnológicas do \mbox{Estado} de São Paulo}
+\tipotrabalho{Dissertação de Mestrado}
+\curso{Engenharia da Computação: Engenharia de Software}
+\concentracao{Área de Concentração: Engenharia de \mbox{Software}}
+\tipotrabalho{Dissertação de Mestrado}
+% O preambulo deve conter o tipo do trabalho, o objetivo, 
+% o nome da instituição e a área de concentração 
+\preambulo{Exame de Qualificação apresentado ao
+	Instituto de Pesquisas Tecnológicas do
+	Estado de São Paulo – IPT, como parte
+	dos requisitos para a obtenção do título
+	de mestre em Engenharia de
+	Computação.}
+% ---
+
+
+% ====================================================================================================================================
+% ---
+% compila o indice
+% ---
+%\makeindex
+% ---
+
+% ====================================================================================================================================
+% ----
+% Início do documento
+% ----
+\begin{document}
+
+\chapterstyle{iptabntex2}			% Estilo de capitulo adotado pelo IPT
+
+% Retira espaço extra obsoleto entre as frases.
+\frenchspacing
+
+% ----------------------------------------------------------
+% ELEMENTOS PRÉ-TEXTUAIS
+% ----------------------------------------------------------
+\pretextual
+\input{_pretexto}
+
+
+% ----------------------------------------------------------
+% ELEMENTOS TEXTUAIS
+% ----------------------------------------------------------
+\textual
+\OnehalfSpacing
+
+%\input{1_Motivacao}
+
+\input{2_EstadoDaArte}
+
+% ----------------------------------------------------------
+% ELEMENTOS PÓS-TEXTUAIS
+% ----------------------------------------------------------
+\postextual
+\input{_postexto}
+
+
+
+\end{document}

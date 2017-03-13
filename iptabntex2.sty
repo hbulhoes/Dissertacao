@@ -1,0 +1,336 @@
+%%
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%   http://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX
+%% version 2005/12/01 or later.
+%%
+%% This work has the LPPL maintenance status `maintained'.
+%%
+%% The Current Maintainer of this work is Leandro Avanço, leandro.avanco@gmail.com
+%%
+%% Further information about abnTeX2 are available on https://www.abntex.net.br/
+%%
+%%
+%% Customizações do abnTeX2 (https://www.abntex.net.br/)
+%% para o Mestrado do Instituto de Pesquisas Tecnológicas - IPT - http://www.ipt.br/
+%%
+%% Historico de alterações
+%%
+%% 2013/06/11 leandro.avanco
+%%   Adequação do espaçamento; Novos comandos de dados para curso, área de concentração, membros da banca, afiliacao, mês e palavras chaves; Mudança no comando Orientador; Reconfiguração da Capa; Reconfiguração da Folha de Aprovação e Folha de Rosto.
+%%
+%% 2013/07/30 leandro.avanco
+%%   Adequação do tamanho das fontes; Reconfigurar titulos para correção dos acentos nas referências do PDF; Formatação do titulo das referências à esquerda..
+%%
+%% 2013/08/14 leandro.avanco
+%%  Criação do estilo de capitulo para o IPT; Reconfiguração das margens no resumo para a mesma do resto do documento.
+%%
+%% 2014/06/15 leandro.avanco
+%%  Configuração para o Uso de Legendas nas Figuras e Tabelas.
+%%
+%% 2014/08/08 leandro.avanco
+%%  Controle do espaçamento entre um parágrafo e outro; Ajuste para a indentação e espaçamento da lista de siglas.
+%%
+%% 2014/09/26 leandro.avanco
+%%  Reconfiguração o espacamento das figuras de diferentes capitulos na lista de figuras; Reconfiguração a formatação das fontes no sumário.
+%%
+%% 2014/11/14 leandro.avanco
+%%  Evita espaços entre linhas excessivos gerados pela opção "twoside.
+%%
+%% 2015/05/26 leandro.avanco
+%%  Criação de estilo de pagina para o IPT; Reconfigurado folha de rosto e folha de aprovação para os novos comandos criados.
+%%
+%% 2015/06/01 leandro.avanco
+%%  Reconfiguração da pagina de Dedicatoria; Remoção da reconfiguração de titulos para correção dos acentos nas referências do PDF; Remoção da reconfiguração o espacamento das figuras de diferentes capitulos na lista de figuras; Remoção da reconfiguração das margens no resumo para a mesma do resto do documento; Reconfiguração para manter o "-" no Apêndice e Anexo no sumario.
+%%
+
+% ---
+% INICIO DAS CUSTOMIZACOES PARA A DISSERTAÇÃO
+% ---
+
+% Adequação do espaçamento -->
+\renewcommand{\SingleSpacing}{\setSpacing{1.0}}
+\renewcommand{\OnehalfSpacing}{\setSpacing{1.5}}
+\renewcommand{\DoubleSpacing}{\setSpacing{2.0}}
+% <-- Adequação do espaçamento
+
+% Adequação do tamanho das fontes -->
+\renewcommand{\ABNTEXchapterfontsize}{\normalsize\bfseries} %12pt
+\renewcommand{\ABNTEXsectionfontsize}{\normalsize}
+\renewcommand{\ABNTEXsubsectionfontsize}{\normalsize} 
+\renewcommand{\ABNTEXfontereduzida}{\small} % 11pt
+% <-- Adequação do tamanho das fontes
+
+% Novos comandos de dados para curso, área de concentração, membros da banca, afiliacao, mês e palavras chaves -->
+% Comandos de dados - Curso
+\providecommand{\imprimircurso}{}
+\newcommand{\curso}[1]{\renewcommand{\imprimircurso}{#1}}
+
+% Comandos de dados - Área de Concentracao
+\providecommand{\imprimirconcentracao}{}
+\newcommand{\concentracao}[1]{\renewcommand{\imprimirconcentracao}{#1}}
+
+% Comandos de dados - orientadorafiliacao
+\providecommand{\imprimirorientadorAfiliacao}{}
+\newcommand{\orientadorafiliacao}[1]{\renewcommand{\imprimirorientadorAfiliacao}{#1}}
+% Comandos de dados - Membro Um da banca e afiliação
+\providecommand{\imprimirmembroum}{}
+\newcommand{\membroum}[1]{\renewcommand{\imprimirmembroum}{#1}}
+\providecommand{\imprimirmembroumAfiliacao}{}
+\newcommand{\membroumAfiliacao}[1]{\renewcommand{\imprimirmembroumAfiliacao}{#1}}
+% Comandos de dados - Membro Dois da banca e afiliação
+\providecommand{\imprimirmembrodois}{}
+\newcommand{\membrodois}[1]{\renewcommand{\imprimirmembrodois}{#1}}
+\providecommand{\imprimirmembrodoisAfiliacao}{}
+\newcommand{\membrodoisAfiliacao}[1]{\renewcommand{\imprimirmembrodoisAfiliacao}{#1}}
+% Comandos de dados - Mês de apresentação
+\providecommand{\imprimirmes}{}
+\newcommand{\mes}[1]{\renewcommand{\imprimirmes}{#1}}
+% Comandos de dados - Palavras-chave
+\providecommand{\imprimirpalavraschave}{}
+\newcommand{\palavraschave}[1]{\renewcommand{\imprimirpalavraschave}{#1}}
+\providecommand{\imprimirkeyword}{}
+\newcommand{\keyword}[1]{\renewcommand{\imprimirkeyword}{#1}}
+%  <-- Novos comandos de dados para curso, área de concentração, membros da banca, afiliacao, mês e palavras chaves
+
+\renewcommand{\orientadorname}{Orientador} % Retirado os ':' para facilitar a criação da capas e folhas de rosto
+
+% Para formatação do titulo das referências à esquerda -->
+\newboolean{isBib}
+\setboolean{isBib}{false}
+% <-- Para formatação do titulo das referências à esquerda
+
+% Criação do estilo de capitulo para o IPT -->
+\makechapterstyle{iptabntex2}{%
+\renewcommand{\chapterheadstart}{} 
+	
+	\ifx \chapternamenumlength \undefined
+	\newlength{\chapternamenumlength}
+	\fi
+	
+	% tamanhos de fontes de chapter e part	
+	\ifthenelse{\equal{\ABNTEXisarticle}{true}}{%
+		\setlength\beforechapskip{\baselineskip}
+		\renewcommand{\chaptitlefont}{\ABNTEXsectionfont\ABNTEXsectionfontsize}
+	}{%else
+	\setlength{\beforechapskip}{0pt}
+	\setlength{\afterchapskip}{\baselineskip} %inclusão para ipt
+	\renewcommand{\chaptitlefont}{\ABNTEXchapterfont\ABNTEXchapterfontsize}
+}
+\renewcommand{\chapnumfont}{\chaptitlefont}
+\renewcommand{\parttitlefont}{\ABNTEXpartfont\ABNTEXpartfontsize}
+\renewcommand{\partnumfont}{\ABNTEXpartfont\ABNTEXpartfontsize}
+\renewcommand{\partnamefont}{\ABNTEXpartfont\ABNTEXpartfontsize}
+% tamanhos de fontes de section, subsection, subsubsection e subsubsubsection
+\setsecheadstyle{\ABNTEXsectionfont\ABNTEXsectionfontsize\ABNTEXsectionupperifneeded}
+\setbeforesecskip{\baselineskip}
+\setaftersecskip{\baselineskip}
+\setsubsecheadstyle{\ABNTEXsubsectionfont\ABNTEXsubsectionfontsize\ABNTEXsubsectionupperifneeded}
+\setbeforesubsecskip{\baselineskip}
+\setaftersubsecskip{\baselineskip}
+\setsubsubsecheadstyle{\ABNTEXsubsubsectionfont\ABNTEXsubsubsectionfontsize\ABNTEXsubsubsectionupperifneeded}
+\setbeforesubsubsecskip{\baselineskip}
+\setaftersubsubsecskip{\baselineskip}
+\setsubsubsubsecheadstyle{\ABNTEXsubsubsubsectionfont\ABNTEXsubsubsubsectionfontsize\ABNTEXsubsubsubsectionupperifneeded}
+% impressao do numero do capitulo
+\renewcommand{\chapternamenum}{}
+% impressao do nome do capitulo
+\renewcommand{\printchaptername}{%
+	\chaptitlefont
+	\ifthenelse{\boolean{abntex@apendiceousecao}}{\appendixname}{}%
+}
+% impressao do titulo do capitulo
+\def\printchaptertitle##1{%
+	\chaptitlefont%
+	%	\ifthenelse{\boolean{abntex@innonumchapter}}{\centering\ABNTEXchapterupperifneeded{##1}}{% 
+	\ifthenelse{\boolean{abntex@innonumchapter}}{\ifthenelse{\boolean{isBib}}{\ABNTEXchapterupperifneeded{##1}}{\centering\ABNTEXchapterupperifneeded{##1}}}{% remove centralização das Referencias
+		\ifthenelse{\boolean{abntex@apendiceousecao}}{%
+			%			\centering% removido centralizacao do Apendice e Anexo para IPT
+			\settowidth{\chapternamenumlength}{\printchaptername\printchapternum\afterchapternum}%
+			\ABNTEXchapterupperifneeded{##1}%
+		}{%
+		\settowidth{\chapternamenumlength}{\printchaptername\printchapternum\afterchapternum}%
+		\parbox[t]{\columnwidth-\chapternamenumlength}{\ABNTEXchapterupperifneeded{##1}}
+	}%
+}    
+}
+% impressao do numero do capitulo     	
+\renewcommand{\printchapternum}{%
+	\tocprintchapter
+	\setboolean{abntex@innonumchapter}{false}
+	\chapnumfont%
+	\space\thechapter\space%
+	\ifthenelse{\boolean{abntex@apendiceousecao}}{%
+%		\tocinnonumchapter % Alinhamento do Apendice e Anexo no sumario para IPT
+		~\textendash~%
+	}{} % else
+}
+\renewcommand{\afterchapternum}{}
+% impressao do capitulo nao numerado
+\renewcommand\printchapternonum{%
+%	\tocprintchapternonum % Alinhamento das Referencias no sumário para IPT
+	\setboolean{abntex@innonumchapter}{true}%
+}
+}
+% <-- Criação do estilo de capitulo para o IPT
+
+% --> Criação de estilo de pagina para o IPT
+\makepagestyle{abntheadings}
+\makeevenhead{abntheadings}{\ABNTEXfontereduzida\thepage}{}{}
+\makeoddhead{abntheadings}{}{}{\ABNTEXfontereduzida\thepage}
+% <-- Criação de estilo de pagina para o IPT
+
+% Reconfiguração da Capa -->
+\renewcommand{\imprimircapa}{%
+  \begin{capa}%
+    \SingleSpacing
+    \ABNTEXchapterfont
+    \bfseries
+    \large
+    \center
+    \vspace*{1cm}
+
+    \imprimirinstituicao
+    \vspace*{\fill}
+
+    \imprimirautor
+    \vspace*{\fill}
+
+    \imprimirtitulo
+    \vspace*{\fill}
+
+    \imprimirlocal
+    \par
+    \imprimirdata
+
+    \vspace*{1cm}
+  \end{capa}
+}
+\makeatother
+%  <-- Reconfiguração da Capa
+
+%  Reconfiguração da Folha de Aprovação -->
+\newcommand{\imprimirfolhadeaprovacao}{
+\begin{folhadeaprovacao}
+  \begin{center}
+    {\ABNTEXchapterfont\imprimirautor}
+
+    \vspace*{\fill}\vspace*{\fill}
+    {\ABNTEXchapterfont\imprimirtitulo}
+    \vspace*{\fill}
+
+    \hspace{.45\textwidth}
+    \begin{minipage}{.52\textwidth}
+    	
+        \imprimirpreambulo
+        \vspace{32pt}\\
+        Data da aprovação \_\_\_\_/\_\_\_\_/\_\_\_\_\_\_
+        \\\\\\
+        \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\\
+        \imprimirorientador~(\imprimirorientadorRotulo)\\
+        \imprimirorientadorAfiliacao
+    \end{minipage}%
+    \vspace*{\fill}
+   \end{center}
+   Membros da Banca Examinadora:\\\\
+   \imprimirorientador~(\imprimirorientadorRotulo)\\
+   \imprimirorientadorAfiliacao
+   \\\\
+   \imprimirmembroum
+   \\
+   \imprimirmembroumAfiliacao
+   \\\\
+   \imprimirmembrodois
+   \\
+   \imprimirmembrodoisAfiliacao
+\end{folhadeaprovacao}
+\makeatother
+}
+%  <-- Reconfiguração da Folha de Aprovação
+
+% Reconfiguração da Folha de Rosto -->
+\renewcommand{\folhaderostocontent}{
+  \begin{center}
+    \vspace*{1cm}
+    {\ABNTEXchapterfont\large\imprimirautor}
+
+    \vspace*{\fill}\vspace*{\fill}
+    {\ABNTEXchapterfont\large\imprimirtitulo}
+    \vspace*{\fill}
+
+      \hspace{.45\textwidth}
+      \begin{minipage}{.52\textwidth}
+
+         \SingleSpacing
+         \imprimirpreambulo
+         \vspace{12pt}
+         \par
+         \imprimirconcentracao
+
+         \vspace{24pt}
+         \par
+         {\imprimirorientadorRotulo:~\imprimirorientador}
+       \end{minipage}%
+       \vspace*{\fill}
+
+    \vspace*{\fill}
+    {\large\imprimirlocal}
+    \par
+    {\large\imprimirmes/\imprimirdata}
+    \vspace*{1cm}
+  \end{center}
+}
+\makeatother
+% <-- Reconfiguração da Folha de Rosto
+
+% Reconfiguração da página de Dedicatória -->
+\renewenvironment{dedicatoria}[1][\dedicatorianame]{%
+	\ifthenelse{\equal{#1}{}}{%
+		\PRIVATEbookmarkthis{\dedicatorianame}
+	}{\pretextualchapter{#1}}
+}{\PRIVATEclearpageifneeded}
+% <-- Reconfiguração da página de Dedicatória
+
+% Permite o uso de legendas nas figuras e tabelas -->
+\captionstyle{\raggedright}
+\captionnamefont{\ABNTEXfontereduzida\bfseries}
+\captiontitlefont{\ABNTEXfontereduzida}
+% <-- Permite o uso de legendas nas figuras e tabelas
+
+% Reconfigurar a formatação das fontes no sumário -->
+\renewcommand*{\cftchapterpagefont}{\normalfont}
+\renewcommand*{\cftsectionfont}{\normalfont}
+% <-- Reconfigurar a formatação das fontes no sumário
+
+% Controle do espaçamento entre um parágrafo e outro -->
+\setlength{\parskip}{0.0cm}  % tente também \onelineskip
+% <-- Controle do espaçamento entre um parágrafo e outro
+
+% Ajusta a indentação e espaçamento da lista de siglas -->
+\renewenvironment{siglas}{%
+  \pretextualchapter{\listadesiglasname}
+  \begin{symbols}
+  \setlength{\itemsep}{-8pt}
+}{%
+  \end{symbols}
+  \cleardoublepage
+}
+% <-- Ajusta a indentação e espaçamento da lista de siglas
+
+% Evita espaços entre linhas excessivos gerados pela opção 'twoside' -->
+\raggedbottom
+% <-- Evita espaços entre linhas excessivos gerados pela opção 'twoside'
+
+% Reconfiguração para manter o '-' no Apêndice e Anexo no sumario -->
+\makeatletter
+\renewcommand{\partapendices}{%
+	\tocpartapendices%
+	}
+\renewcommand{\partanexos}{%
+	\tocpartanexos%
+}
+\makeatother
+% <-- Reconfiguração para manter o '-' no Apêndice e Anexo no sumario

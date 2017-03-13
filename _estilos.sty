@@ -1,0 +1,58 @@
+\ProvidesPackage{_estilos}
+
+% ---
+% Pacotes fundamentais
+% ---
+\usepackage[T1]{fontenc}		% Selecao de codigos de fonte.
+\usepackage{lastpage}			% Usado pela Ficha catalográfica
+\usepackage{indentfirst}		% Indenta o primeiro parágrafo de cada seção.
+\usepackage{color}				% Controle das cores
+\usepackage{graphicx}			% Inclusão de gráficos
+\usepackage[brazil]{babel}		% Para definir a língua - abntex2.cls já carrega
+% Fonte Arial >
+\usepackage{fontspec}
+\usepackage{xltxtra}
+\setromanfont[Mapping=tex-text]{Arial}
+\setsansfont[Mapping=tex-text]{Arial}
+% Fonte Arial <
+\usepackage{setspace}			% Permite Configuracao de Espaçamento entre Linhas
+\usepackage{microtype}			% Ajuda a ajustar hifenização
+%\hyphenpenalty = 10000			% Remove a Hifenização
+%\hyphenpenalty = 1000			% Reduz a Hifenização
+\usepackage{type1cm}			% Fontes Escaláveis
+\usepackage{float}				% Permite Posicionar as Figuras de Forma Correta
+\usepackage{csquotes}			% Configuração adicional para aspas
+\usepackage{lscape}				% Possibilita a criação de paginas em formato paisagem
+\usepackage{enumerate}          % permite listas numeradas
+
+\usepackage{iptabntex2}		% Pacote com Customizações do abntex2 + IPT para esta dissertaçao
+
+\usepackage[alf,abnt-emphasize=bf,abnt-etal-list=2,abnt-etal-cite=2,abnt-etal-text=2,abnt-repeated-title-omit=yes]{abntex2cite}	% Citações padrão ABNT conforme orientação do IPT
+%\usepackage[alf,abnt-emphasize=bf,abnt-etal-list=2,abnt-etal-cite=2,abnt-repeated-title-omit=yes]{abntex2cite}	% Citações padrão ABNT conforme orientação do IPT
+
+
+% ---
+% Configurações de aparência do PDF final
+%
+% alterando o aspecto da cor azul
+%\definecolor{blue}{RGB}{41,5,195}
+%
+%% informações do PDF
+%\makeatletter
+%\hypersetup{
+%	plainpages=false,
+%	colorlinks=true,
+%	citecolor=black,
+%	linkcolor=black,
+%	urlcolor=black,
+%	filecolor=black,
+%	bookmarksopen=true,
+%	pdftitle={\imprimirtitulo},
+%	pdfauthor={\imprimirautor},
+%	pdfsubject={\imprimirpreambulo},
+%	pdfcreator={XeLaTeX com abnTeX2},
+%	pdfkeywords={\imprimirpalavraschave},
+%	bookmarksdepth=4
+%}
+%\makeatother
+% --- 
