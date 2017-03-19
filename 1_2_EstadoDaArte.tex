@@ -38,6 +38,7 @@ CSP e CORS são recomendações do comitê W3C \cite{W3C:CSP} \cite{W3C:CORS}, s
 
 
 \subsection{Abordagens experimentais para contenção de ataques}
+Os mecanismos tradicionais são discricionários, pois as aplicações devem pré-estabelecer explicitamente seus parâmetros de segurança da informação (seja através de CSP ou CORS) para que o navegador configure um contexto de segurança correspondente \cite[p. 31]{stefan:2015:phdthesis}. Trata-se, ademais, de um controle estático, imutável durante todo o ciclo de vida da página, o que é inadequado para aplicações ao estilo \textit{mashup} em que os componentes da página podem ser desconhecidos no momento em que as diretivas de segurança são aplicadas pelo navegador.
 
 Uma característica fundamental das abordagens tradicionais é sua ênfase na comunicação de rede entre domínios distintos. Esse é um enfoque pertinente: a confiabilidade entre domínios é essencial para garantir um mínimo de segurança. No entanto, o navegador como um todo pode abrir vulnerabilidades que independem de conexões de rede para se concretizarem. \textit{Plugins} e extensões são executados com privilégios elevados e têm acesso a todas as partes do navegador com as quais os usuários interagem, podendo extender dinamicamente a linguagem Javascript para modificar seu funcionamento e rastrear de informações.
 
