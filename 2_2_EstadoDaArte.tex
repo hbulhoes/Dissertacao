@@ -1,4 +1,7 @@
 %!TEX root = Projeto.tex
+
+%VALE A PENA OLHAR O QUE PODE SER APROVEITADO DOS TRABALHOS ENUMERADOS COMO "SANDBOXING" NO ARTIGO SOBRE COWL.
+
 \section{Estado da arte}
 Segurança da informação é o processo de ``preservação da confidencialidade, integridade e disponibilidade da informação'' \cite{ISO2016}. Neste trabalho, tal definição será restrita aos sistemas de informação relacionados com a navegação de usuários através da web: provedores de serviço (\textit{sites}, servidores da web), protocolos de comunicação em rede (HTTP, HTTPS, \textit{web sockets}), navegadores (\textit{browsers}) e os ambientes de execução de Javascript embutidos nos navegadores. Isto delimita a área de conhecimento relevante para este trabalho.
 
@@ -54,7 +57,7 @@ Este artigo é um dos primeiros trabalhos relevantes sobre as vulnerabilidades e
 \subsubsection{Security of web mashups: A survey \cite{DeRyck2012}}
 O artigo é motivado pelos requisitos de segurança de aplicações \textit{mashup}. Os autores definem um conjunto de categorias de requisitos não funcionais de segurança e avaliam a conformidade desses requisitos versus funcionalidades do navegador. O critério de classificação estabelecido posiciona as diversas abordagens em quatro graduações que vão desde a separação total de componentes até sua integração completa.
 
-\textbf{Contribuição.} O artigo contribui com a enumeração de requisitos que uma solução voltada à segurança da informação deve atender. Algumas das tecnologias mencionadas podem ter se tornado obsoletas ou de alcance limitado desde que o artigo foi escrito, o que não invalida o resultado pretendido pelos autores, que é considerado ``estado da arte''\cite{Hedin2014} em pesquisa sobre segurança de aplicações de composição baseadas em Javascript.
+\textbf{Contribuição.} O artigo contribui com a enumeração de requisitos que uma solução voltada à segurança da informação deve atender. Algumas das tecnologias mencionadas podem ter se tornado obsoletas ou de alcance limitado desde que o artigo foi escrito, o que não invalida o resultado pretendido pelos autores, que é considerado ``estado da arte'' \cite{Hedin2014} em pesquisa sobre segurança de aplicações de composição baseadas em Javascript.
 
 
 \subsubsection{Information-Flow Security for a Core of JavaScript \cite{Hedin2012}}
@@ -78,7 +81,7 @@ O trabalho, uma continuação de outro de mesma autoria\cite{Hedin2012}, é comp
 \subsubsection{Information Flow Control in WebKit's JavaScript Bytecode \cite{Bichhawat2014}}
 Levando a análise do fluxo de informações a um patamar ainda mais profundo, este trabalho introduz um monitor de segurança integrado ao compilador de Javascript do mecanismo WebKit de navegação\footnote{O projeto de código aberto WebKit serve como base para a construção de navegadores como o Safari (MacOS e iOS).}. Os autores discorrem sobre os desafios de se implementar um monitor dinâmico operando sobre o \textit{bytecode} gerado pelo compilador, enfatizando a dificuldade de tratamento de fluxos não-estruturados, porém válidos, na linguagem Javascript -- especificamente, programas que fazem uso de instruções como \texttt{break}, \texttt{throw}, \texttt{continue}, \texttt{return} etc. Os autores demonstram como a análise estática é mais apropriada que a análise dinâmica para a avaliação de \textit{bytecode}. Preocupações com o desempenho do monitor e seu \textit{overhead} comparado às implementações padrão do WebKit são endereçadas com uma bateria de testes realizada através da suíte SunSpider\footnote{SunSpider -- \url{https://webkit.org/perf/sunspider/sunspider.html} (descontinuado; sucedido pela suíte JetStream, disponível em \url{http://browserbench.org/JetStream/})}.
 
-\textbf{Contribuição.} O trabalho deixa evidente a complexidade e o esforço necessário para a implementação de um projeto dessa envergadura. Desconsiderando a natureza prototipal do artefato de software derivado do trabalho, os autores expõem com clareza o funcionamento do \textit{bytecode} gerado a partir de Javascript sob o ponto de vista da segurança da informação, apontando, como \cite{Hedin2014}, para a análise híbrida como o meio mais adequado para a avaliação de níveis de segurança em fluxos não-estruturados.
+\textbf{Contribuição.} O trabalho deixa evidente a complexidade e o esforço necessário para a implementação de um projeto dessa envergadura. Desconsiderando a natureza prototípica do artefato de software derivado do trabalho, os autores expõem com clareza o funcionamento do \textit{bytecode} gerado a partir de Javascript sob o ponto de vista da segurança da informação, apontando, como \cite{Hedin2014}, para a análise híbrida como o meio mais adequado para a avaliação de níveis de segurança em fluxos não-estruturados.
 
 
 \subsubsection{Protecting Users by Confining JavaScript with COWL \cite{Stefan2014}}
