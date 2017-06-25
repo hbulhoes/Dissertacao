@@ -3,43 +3,41 @@
 
 %COMO ESTE TRABALHO VAI ALCANÇAR O OBJETIVO E CONCRETIZAR AS CONTRIBUIÇÕES?
 
-Para validar a proposta de Encapsulamento por \textit{shadow DOM}, propõe-se uma sequência de tarefas para a exploração do problema e elaboração da solução. O método de trabalho, então, é composto das atividades enumeradas a seguir.
+Para validar a proposta de encapsulamento por \textit{shadow DOM}, propõe-se uma sequência de tarefas para a exploração do problema e elaboração da solução. O método de trabalho, então, é composto das atividades enumeradas a seguir.
 
-
-\subsection{Coleta de evidências}
-Nesta primeira atividade, os problemas endereçáveis pelo método proposto serão materializados em simulações e casos de teste que evidenciem acessos não autorizados a informações contidas em componentes de páginas da web. Especificamente, as evidências devem provar que é possível efetuar as seguintes ações sem o conhecimento ou consentimento do usuário:
 
 \begin{alineas}
-	\item scripts provenientes de domínios diferentes podem observar o conteúdo de páginas da web, incluindo identificações, senhas, códigos de cartão de crédito e números de telefone, desde que essas informações estejam presentes na estrutura da página;
-	\item scripts agindo em extensões do navegador podem observar o conteúdo de páginas da web e de seus subcomponentes (\textit{iframes});
-	\item scripts de qualquer natureza podem registrar o comportamento do usuário ao interagir com a página, capturando eventos de teclado e de mouse;
-	\item scripts de qualquer natureza conseguem interceptar funcionalidades do navegador para extrair informações que transitem pelas interfaces de programação do DOM e de Javascript.
+	\item Coleta de evidências
+	Nesta primeira atividade, os problemas abordados pelo método proposto serão materializados em simulações e casos de teste que evidenciem acessos não autorizados a informações contidas em componentes de páginas da web. Especificamente, as evidências devem provar que é possível efetuar as seguintes ações sem o conhecimento ou consentimento do usuário:
+	
+	\begin{alineas}
+		\item scripts provenientes de domínios diferentes podem observar o conteúdo de páginas da web, incluindo identificações, senhas, códigos de cartão de crédito e números de telefone, desde que essas informações estejam presentes na estrutura da página;
+		\item scripts agindo em extensões do navegador podem observar o conteúdo de páginas da web e de seus subcomponentes (\textit{iframes});
+		\item scripts de qualquer natureza podem registrar o comportamento do usuário ao interagir com a página, capturando eventos de teclado e de mouse;
+		\item scripts de qualquer natureza conseguem interceptar funcionalidades do navegador para extrair informações que transitem pelas interfaces de programação do DOM e de Javascript.
+	\end{alineas}
+	
+	Artefatos derivados dos casos de testes, codificados como páginas da web, serão insumo das atividades de avaliação do método proposto. Parte desta tarefa será dedicada à automação dos casos de teste pelo \textit{framework} de programação de testes Selenium\footnote{http://www.seleniumhq.org/}. Os scripts de automação serão agregados ao conjunto de artefatos de código derivados deste trabalho.
+	
+	\item Proposição do método
+	O objetivo desta atividade é projetar um método de encapsulamento com o qual desenvolvedores de páginas da web possam definir componentes de HTML imunes ao vazamento de informação por meio de Javascript. O método precisará atender aos seguintes requisitos:
+	
+	\begin{alineas}
+		\item Permitir que qualquer combinação de elementos HTML seja encapsulável em um componente inviolável por scripts externos a si;
+		\item Ser compatível com bibliotecas e \textit{frameworks} de desenvolvimento em Javascript, HTML e CSS;
+		\item Estabelecer um protocolo de confiança entre si e agentes (scripts) externos;
+		\item Sob esse mesmo protocolo, expor uma interface de programação para a leitura e modificação das informações encapsuladas;
+		\item Ser compatível com recursos padronizados e não-experimentais de HTML e Javascript.
+	\end{alineas}
+	
+	O resultado desta atividade é uma especificação técnica da solução proposta, incluindo requisitos e limitações de uso.
+	
+	\item Implementação do método
+	Esta atividade tem a finalidade de produzir um componente de HTML e Javascript compatível com os requisitos estabelecidos pela proposta, seguido pela incorporação desse artefato às páginas web derivadas dos casos de teste.
+	
+	\item Avaliação do método
+	Nesta tarefa, o componente implementado será submetido à avaliação de sua eficácia frente às vulnerabilidades e sua compatibilidade em relação aos requisitos do método. Esse resultado será verificado pelo acionamento dos testes automatizados, que demonstrarão se os problemas evidenciados são neutralizados pela implementação.
+	
+	\item Síntese dos resultados
+	O produto do acionamento dos testes indicará não apenas o sucesso ou falha em cada caso de teste, mas também fornecerá informações como a diferença no desempenho (tempo de execução e memória do navegador) e nos erros ou exceções capturadas em tempo de execução, antes e depois da aplicação do método. Falhas de segurança que não forem mitigadas serão diagnosticadas com base nas especificações das APIs utilizadas nos testes e na implementação. A partir dessas observações será elaborada uma síntese dos resultados alcançados, incluindo uma reflexão sobre a abrangência e utilidade dos artefatos produzidos. As realizações e limitações deste trabalho serão comparadas com aquelas encontradas em trabalhos relacionados experimentais como \cite{Hedin2014} e \cite{Stefan2014}, posicionando definitivamente a contribuição deste trabalho dentro do panorama de segurança da informação.
 \end{alineas}
-
-Artefatos derivados dos casos de testes, codificados como páginas da web, serão insumo das atividades de avaliação do método proposto. O método será considerado eficaz se os problemas evidenciados forem neutralizados através de sua aplicação.
-
-
-\subsection{Proposição do método}
-O objetivo desta atividade é projetar um método de encapsulamento através do qual desenvolvedores de páginas da web possam definir componentes de HTML imunes ao vazamento de informação por meio de Javascript. O método precisará atender aos seguintes requisitos:
-
-\begin{alineas}
-	\item Permitir que qualquer combinação de elementos HTML seja encapsulável em um componente inviolável por scripts externos a si;
-	\item Ser compatível com bibliotecas e \textit{frameworks} de desenvolvimento em Javascript, HTML e CSS;
-	\item Estabelecer um protocolo de confiança entre si e agentes (scripts) externos;
-	\item Sob esse mesmo protocolo, expor uma interface de programação para a leitura e modificação das informações encapsuladas;
-	\item Ser compatível com recursos padronizados e não-experimentais de HTML e Javascript.
-\end{alineas}
-
-O resultado desta atividade é uma especificação técnica da solução proposta, incluindo pré-requisitos e limitações de uso.
-
-
-\subsection{Implementação-modelo do método proposto}
-Partindo da especificação do método, será construída uma implementação-modelo para fins de validação. Esta atividade tem a finalidade de gerar um artefato de HTML e Javascript compatível com os requisitos estabelecidos pela proposta. Como requisito adicional e específico para esta atividade, a implementação-modelo deve ser transparentemente integrável aos artefatos dos casos de teste, de forma a não produzir nenhuma mudança no comportamento apresentado por eles aos usuários.
-
-
-\subsection{Avaliação do método}
-Nesta tarefa, artefatos que materializam os casos de teste serão modificados para que sejam compatíveis com implementação-modelo do método proposto. O método será assim submetido à avaliação de sua eficácia frente às vulnerabilidades e sua compatibilidade em relação aos pré-requisitos do método. Parte desta tarefa será dedicada à automação dos casos de teste na forma de scripts compatíveis com o \textit{framework} Selenium\footnote{http://www.seleniumhq.org/}. Os scripts de automação serão agregados ao conjunto de artefatos de código derivados deste trabalho.
-
-
-\subsection{Síntese dos resultados}
-A avaliação do método produzirá observações objetivas, como a eficácia contra vulnerabilidades e reflexos no desempenho do navegador, bem como impressões subjetivas como a facilidade de aplicação e a severidade das restrições impostas pelo método. A partir dessas observações será elaborada uma síntese dos resultados alcançados, incluindo uma reflexão sobre a abrangência e utilidade dos artefatos produzidos. As realizações e limitações deste trabalho serão  comparadas com as de trabalhos relacionados, posicionando definitivamente estas contribuições dentro do panorama de segurança da informação.
