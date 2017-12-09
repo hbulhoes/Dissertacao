@@ -6,28 +6,30 @@
 %
 %
 \documentclass[
-	% -- opções da classe memoir --
-	12pt,				% tamanho da fonte
-	openright,			% capítulos começam em pág ímpar (insere página vazia caso preciso)
-	twoside,			% para impressão em recto e verso. Oposto a oneside
-	a4paper,			% tamanho do papel. 
-	% -- opções da classe abntex2 --
-	%chapter=TITLE,		% títulos de capítulos convertidos em letras maiúsculas
-	%section=TITLE,		% títulos de seções convertidos em letras maiúsculas
-	%subsection=TITLE,	% títulos de subseções convertidos em letras maiúsculas
-	%subsubsection=TITLE,% títulos de subsubseções convertidos em letras maiúsculas
-	% -- opções do pacote babel --
-	english,			% idioma adicional para hifenização
-	brazil				% o último idioma é o principal do documento
-	]{abntex2}
+% -- opções da classe memoir --
+12pt,				% tamanho da fonte
+openright,			% capítulos começam em pág ímpar (insere página vazia caso preciso)
+%twoside,			% para impressão em recto e verso. Oposto a oneside
+oneside,			% VAMOS EVITAR AS PÁGINAS EM BRANCO ENTRE OS CAPÍTULOS?
+a4paper,			% tamanho do papel. 
+% -- opções da classe abntex2 --
+%chapter=TITLE,		% títulos de capítulos convertidos em letras maiúsculas
+section=TITLE,		% títulos de seções convertidos em letras maiúsculas
+subsection=TITLE,	% títulos de subseções convertidos em letras maiúsculas
+%subsubsection=TITLE,% títulos de subsubseções convertidos em letras maiúsculas
+% -- opções do pacote babel --
+english,			% idioma adicional para hifenização
+brazil				% o último idioma é o principal do documento
+]{abntex2}
 
 \usepackage{_estilos}
+\usepackage{_listings}
 
 % ====================================================================================================================================
 % ---
 % Informações de dados para CAPA e FOLHA DE ROSTO
 % ---
-\titulo{Método para encapsulamento da informação em aplicações de HTML e Javascript}
+\titulo{Melhoria da segurança da informação em navegadores: uma proposta baseada em APIs Javascript e HTML}
 \autor{Humberto Borgas Bulhões}
 \local{São Paulo}
 \data{2017}
@@ -39,7 +41,7 @@
 \concentracao{Área de Concentração: Engenharia de \mbox{Software}}
 \tipotrabalho{Dissertação de Mestrado}
 \palavraschave{Segurança da informação, vazamento de dados, HTML, Javascript, DOM.}
-\keyword{Information security, data leak, HTML, Javascript, DOM.}
+\keyword{Information security, information leak, HTML, Javascript, DOM.}
 % O preambulo deve conter o tipo do trabalho, o objetivo, 
 % o nome da instituição e a área de concentração 
 \preambulo{Exame de Qualificação apresentado ao
@@ -63,34 +65,34 @@
 % Início do documento
 % ----
 \begin{document}
-
-\chapterstyle{iptabntex2}			% Estilo de capitulo adotado pelo IPT
-
-% Retira espaço extra obsoleto entre as frases.
-\frenchspacing
-
-% ----------------------------------------------------------
-% ELEMENTOS PRÉ-TEXTUAIS
-% ----------------------------------------------------------
-\pretextual
-\input{_pretexto}
-
-
-% ----------------------------------------------------------
-% ELEMENTOS TEXTUAIS
-% ----------------------------------------------------------
-\textual
-\OnehalfSpacing
-
-\input{1_Introducao}
-\input{2_EstadoDaArte}
-
-% ----------------------------------------------------------
-% ELEMENTOS PÓS-TEXTUAIS
-% ----------------------------------------------------------
-\postextual
-\input{_postexto}
-
-
-
+	
+	\chapterstyle{iptabntex2}			% Estilo de capitulo adotado pelo IPT
+	
+	% Retira espaço extra obsoleto entre as frases.
+	\frenchspacing
+	
+	% ----------------------------------------------------------
+	% ELEMENTOS PRÉ-TEXTUAIS
+	% ----------------------------------------------------------
+	\pretextual
+	\input{_pretexto}
+	
+	
+	% ----------------------------------------------------------
+	% ELEMENTOS TEXTUAIS
+	% ----------------------------------------------------------
+	\textual
+	\OnehalfSpacing
+	
+	\input{1_Introducao}
+	\input{2_EstadoDaArte}
+	
+	% ----------------------------------------------------------
+	% ELEMENTOS PÓS-TEXTUAIS
+	% ----------------------------------------------------------
+	\postextual
+	\input{_postexto}
+	
+	
+	
 \end{document}
