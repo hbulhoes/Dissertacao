@@ -111,11 +111,21 @@
 % ---
 % inserir lista de ilustrações
 % ---
-%{\SingleSpacing
-%\pdfbookmark[0]{\listfigurename}{lof}
-%\listoffigures*
-%\cleardoublepage
-%}
+{\SingleSpacing
+\pdfbookmark[0]{\listfigurename}{lof}
+\listoffigures*
+\cleardoublepage
+}
+% ---
+
+% ---
+% inserir lista de trechos de código fonte
+% ---
+{\SingleSpacing
+	\pdfbookmark[0]{\lstlistlistingname}{lol}
+	\lstlistoflistings*
+	\cleardoublepage
+}
 % ---
 
 % ---
@@ -140,9 +150,13 @@
 % inserir lista de abreviaturas e siglas
 % ---
 %
-%\begin{siglas}
-%  \item[IPT] Instituto de Pesquisas Tecnológicas do Estado de São Paulo
-%\end{siglas}
+\begin{siglas}
+  \item[CORS] Cross-origin Resource Sharing
+  \item[DOM] Document Object Model
+  \item[IFC] Information Flow Control
+  \item[SOP] Same Origin Policy
+  \item[XSS] Cross-site Scripting
+\end{siglas}
 
 % ---
 

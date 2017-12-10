@@ -8,6 +8,22 @@
 
 O objetivo deste trabalho é propor uma abordagem para o confinamento de informação usando recursos padronizados de HTML e Javascript. A proposta deverá permitir ao desenvolvedor a delimitação de regiões do DOM cujo conteúdo seja opaco para scripts incorporados e extensões do navegador.
 
-Como objetivo secundário, será implementada uma prova de conceito. Nela a proposta será avaliada sob dois requisitos: (1) efetividade da ocultação do conteúdo de regiões do DOM, e (2) efetividade da ocultação dos eventos do DOM originado em regiões do DOM.
+A efetividade da proposta deve ser avaliada segundo requisitos não funcionais enumerados por \cite{DeRyck2012}:
 
-Para a implementação serão empregadas APIs suportadas pelos navegadores modernos, sem que seja necessário fazer uso de técnicas que exijam navegadores experimentais.
+\begin{alineas}
+	\item Efetividade da separação do DOM: a estrutura de documento mantida em regiões ocultas pela abordagem proposta é separada do restante da página;
+	\item Efetividade do isolamento de scripts: scripts carregados em regiões ocultas não poderão sofrer influência de scripts externos a essas regiões;
+	\item Confidencialidade: a informação mantida em regiões ocultas só poderá ser lida por scripts especialmente criados para esse fim pelo desenvolvedor da aplicação;
+	\item Integridade: a informação mantida em regiões ocultas só poderá ser modificada por scripts especialmente criados para esse fim pelo desenvolvedor da aplicação;
+	\item Autenticidade: o protocolo de comunicação com regiões ocultas deve suportar apenas participantes que confiem uns aos outros.
+\end{alineas}
+
+Requisitos funcionais da proposta devem satisfazer sua compatibilidade com os navegadores modernos, não-experimentais:
+
+\begin{alineas}
+	\item Permitir que qualquer combinação de elementos HTML seja encapsulada em regiões ocultas;
+	\item Ser compatível com bibliotecas e \textit{frameworks} de desenvolvimento em Javascript, HTML e CSS;
+	\item Expor uma interface de programação para a leitura e modificação das informações contidas em regiões ocultas.
+\end{alineas}
+
+Como objetivo secundário, será implementada uma prova de conceito que valide os requisitos estabelecidos.

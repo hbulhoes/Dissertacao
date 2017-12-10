@@ -3,7 +3,7 @@
 %VALE A PENA OLHAR O QUE PODE SER APROVEITADO DOS TRABALHOS ENUMERADOS COMO "SANDBOXING" NO ARTIGO SOBRE COWL.
 
 \section{Estado da arte}
-O estado da arte em segurança da informação nos navegadores é resultado de uma progressiva adaptação deste tipo de software aos recursos de composição e de publicação das aplicações web. Vulnerabilidades têm se manifestado desde o momento em que os navegadores e servidores passaram a dar suporte a \textit{cookies}, à linguagem Javascript, ao DOM e aos recursos de incorporação de mídia, porém as formas de mitigação dessas vulnerabilidades competem entre si e com as funcionalidades de que os desenvolvedores dependem, resultando em regras e práticas inconsistentes e incompletas \cite{Hill2016}.
+%O estado da arte em segurança da informação nos navegadores é resultado de uma progressiva adaptação deste tipo de software aos recursos de composição e de publicação das aplicações web. 
 
 Segurança da informação é o processo de ``preservação da confidencialidade, integridade e disponibilidade da informação'' \cite{ISO2016}. Neste trabalho, tal definição será restrita aos sistemas de informação relacionados com a navegação de usuários através da web: provedores de serviço (\textit{sites}, servidores da web), protocolos de comunicação em rede (HTTP, HTTPS, \textit{web sockets}), navegadores (\textit{browsers}) e os ambientes de execução de Javascript embutidos nos navegadores. Isto delimita a área de conhecimento relevante para este trabalho.
 
@@ -47,7 +47,41 @@ Os mecanismos tradicionais são discricionários, pois as aplicações devem pr�
 
 Uma característica fundamental das abordagens tradicionais é sua ênfase na comunicação de rede entre domínios distintos. Esse é um enfoque pertinente: a confiabilidade entre domínios é essencial para garantir um mínimo de segurança. No entanto, o navegador como um todo pode abrir vulnerabilidades que independem de conexões de rede para se concretizarem. \textit{Plugins} e extensões são executados com privilégios elevados e têm acesso a todas as partes do navegador com as quais os usuários interagem, podendo extender dinamicamente a linguagem Javascript para modificar seu funcionamento e rastrear de informações.
 
+\subsubsection{Controle do fluxo de informações}
+
+O controle do fluxo de informações (IFC -- \textit{information flow control}) é um mecanismo que atua, em tempo de execução, nos meios de propagação dos valores entre os espaços de armazenamento de um sistema computacional de modo a impedir fluxos não autorizados dos dados. Descrito inicialmente por \cite{Denning1976}, IFC baseia-se em \textit{classes de segurança} utilizadas para rotular graus de confidencialidade, aplicáveis à informação propriamente dita e aos seus espaços de armazenamento (\textit{heap}, pilha, redes, dispositivos etc). Operações entre entidades com classes de segurança diferentes, como a cópia do valor de uma variável \texttt{<h>} (confidencial) para a variável \texttt{<l>} (pública), precisam ser marcadas 
+
 Abordando a segurança da informação no navegador de forma holística, mecanismos experimentais têm sido propostos para implementar \textit{controle do fluxo de informação} (IFC -- \textit{information flow control}) como estratégia de segurança não-discricionária e dinâmica.
+
+\begin{lstlisting}[caption=Fluxo explícito de informação][language=JavaScript]
+var revelaH = function(h) {
+// O valor do parâmetro <h>, tido como confidencial, é explicitamente
+// propagado para o domínio www.evil.com:
+makeAjaxCall('www.evil.com/tell/secret/' + h);
+}
+
+var h = document.getElementById('password').value;
+revelaH(h);
+\end{lstlisting}
+
+
+\begin{lstlisting}[caption=Fluxo implícito de informação][language=JavaScript]
+var revelaH = function(h) {
+// Uma pista sobre o valor do parâmetro <h>, tido como confidencial,
+// é propagada para o domínio www.evil.com:
+var pista = h.charAt(0) === 's';
+makeAjaxCall('www.evil.com/tell/hint?startsWith=s&hint=' + pista);
+// Agora, www.evil.com sabe se o valor confidencial é
+// um texto iniciado com a letra "s"
+}
+
+var h = document.getElementById('password').value;
+revelaH(h);
+\end{lstlisting}
+
+
+
+
 
 
 \subsubsection{An empirical study of privacy-violating information flows in JavaScript web applications \cite{Jang2010}}
