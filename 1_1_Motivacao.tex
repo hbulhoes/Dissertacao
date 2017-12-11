@@ -28,11 +28,14 @@ Código \textit{inline} ou \textit{scripts} baixados pelas páginas da web são 
 
 Em momento posterior, o script servido pelos servidores da CDN é substituído por código malicioso que, além de efetuar as funções do script benigno, captura o conteúdo da página armazenado no DOM. O script pode buscar informações específicas e potencialmente sensíveis como identificação do usuário, senhas e endereços. Por causa da autorização concedida pelo protocolo CORS, o código mal intencionado tem a chance de transmitir o conteúdo capturado para um serviço anômalo.
 
-(DIAGRAMA 2: COMPORTAMENTO DA APLICAÇÃO APÓS A PUBLICAÇÃO DO SCRIPT MALICIOSO)
+\begin{figure}
+	\centering
+	\includegraphics[width=15cm]{diagramas/diagrama02.pdf}
+	\caption{Domínio de CDN comprometido, capturando informações do usuário.}
+	\label{Fig: diagrama02}
+\end{figure}
 
 Acessar, capturar e modificar informações contidas no DOM também são efeitos de extensões do navegador. Mas, diferentemente dos scripts incorporados em páginas, extensões são executadas em modo privilegiado e podem afetar todas as páginas carregadas pelo navegador, não sendo confinadas a domínios específicos. Extensões como as do Google Chrome são publicadas exclusivamente em site específico e protegido, mas não é impossível que o código fonte de extensões seja descaracterizado e publicado pela ação de \textit{hackers} \cite{Spring2017}, afetando a todos os usuários que atualizarem a extensão -- um processo automático por padrão \cite{Google2017}. 
-
-(DIAGRAMA 3: AÇÃO DE UMA EXTENSÃO COMPROMETIDA)
 
 % Contextualizar: o que tem sido feito nessa direção, em termos de padrões estabelecidos?
 %Na raiz das vulnerabilidades está a forma inconsistente e parcial com que a linguagem Javascript e as APIs do navegador tratam o isolamento entre \textit{scripts} e dados. 
