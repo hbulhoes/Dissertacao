@@ -1,30 +1,5 @@
 %!TEX root = Projeto.tex
 \section{Objetivo}
+O objetivo principal deste trabalho é propor uma abordagem para a ocultação da informação contida no DOM usando recursos padronizados de HTML e Javascript. A proposta deverá permitir ao desenvolvedor a delimitação de regiões do DOM cujo conteúdo seja opaco para \scripts incorporados e extensões do navegador. Os requisitos da proposta serão obtidos da literatura sobre segurança da informação em Javascript.
 
-%A MOTIVAÇÃO DEVE TER ESCLARECIDO QUE EXISTEM PROBLEMAS DE INFOSEC DIFÍCEIS DE SE CONTORNAR COM AS DIRETIVAS TRADICIONAIS. NESTA SEÇÃO DEVERÁ FICAR CLARO QUE UMA ABORDAGEM DIFERENTE ""PODE"" SER AVALIADA, E QUE É OBJETIVO DESTE TRABALHO FAZER ESSA AVALIAÇÃO.
-
-%Para formular um Objetivo realista, é preciso ter uma hipótese (hipo-tese).
-%Hipótese: uma afirmação que deverá ser testada (parece razoável, baseando-me no que li, ou no que observei, que é possível fazer X...). É preciso justificar a hipótese.
-
-O objetivo deste trabalho é propor uma abordagem para a ocultação da informação contida no DOM usando recursos padronizados de HTML e Javascript. A proposta deverá permitir ao desenvolvedor a delimitação de regiões do DOM cujo conteúdo seja opaco para scripts incorporados e extensões do navegador.
-
-A efetividade da proposta deve ser avaliada segundo requisitos não funcionais enumerados por \cite{DeRyck2012}:
-%POSSÍVEL DESDOBRAMENTO DO PARÁGRAFO: A abordagem pode ser formulada como uma política de segurança como sugerido por \cite{Goguen1982}, na definição de que uma política de segurança tem o propósito de declarar quais fluxos de informação serão proibidos. A efetividade da solução será avaliada segundo requisitos não funcionais enumerados por \cite{DeRyck2012}:
-
-\begin{alineas}
-	\item Efetividade da separação do DOM: a estrutura de documento mantida em regiões ocultas pela abordagem proposta é separada do restante da página;
-	\item Efetividade do isolamento de scripts: scripts carregados em regiões ocultas não poderão sofrer influência de scripts externos a essas regiões;
-	\item Confidencialidade: a informação mantida em regiões ocultas só poderá ser lida por scripts especialmente criados para esse fim pelo desenvolvedor da aplicação;
-	\item Integridade: a informação mantida em regiões ocultas só poderá ser modificada por scripts especialmente criados para esse fim pelo desenvolvedor da aplicação;
-	\item Autenticidade: o protocolo de comunicação com regiões ocultas deve suportar apenas participantes que confiem uns aos outros.
-\end{alineas}
-
-Requisitos funcionais da proposta devem satisfazer sua compatibilidade com os navegadores modernos, não-experimentais:
-
-\begin{alineas}
-	\item Permitir que qualquer combinação de elementos HTML seja encapsulada em regiões ocultas;
-	\item Ser compatível com bibliotecas e \textit{frameworks} de desenvolvimento em Javascript, HTML e CSS;
-	\item Expor uma interface de programação para a leitura e modificação das informações contidas em regiões ocultas.
-\end{alineas}
-
-Como objetivo secundário, será implementada uma prova de conceito que valide os requisitos estabelecidos.
+O objetivo secundário deste trabalho é a implementação de uma prova de conceito que permita avaliar a proposta em função de seus requisitos, em testes de segurança usuais.

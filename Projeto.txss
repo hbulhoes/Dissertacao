@@ -15,8 +15,8 @@ File2\Line=0
 File2\Col=0
 File2\FirstLine=0
 File2\FoldedLines=
-MasterFile=
-CurrentFile=1_3_Contribuicao.tex
+MasterFile=Projeto.tex
+CurrentFile=Projeto.bib
 Bookmarks=@Invalid()
 File3\FileName=1_2_Objetivo.tex
 File3\Line=0
@@ -24,11 +24,11 @@ File3\Col=0
 File3\FirstLine=0
 File3\FoldedLines=
 File4\FileName=1_3_Contribuicao.tex
-File4\Line=3
-File4\Col=0
+File4\Line=5
+File4\Col=537
 File4\FirstLine=0
 File4\FoldedLines=
 
 [InternalPDFViewer]
-File=
-Embedded=false
+File=Projeto.pdf
+Embedded=true

@@ -3,14 +3,41 @@
 %VALE A PENA OLHAR O QUE PODE SER APROVEITADO DOS TRABALHOS ENUMERADOS COMO "SANDBOXING" NO ARTIGO SOBRE COWL.
 
 \section{Estado da arte}
-%O estado da arte em segurança da informação nos navegadores é resultado de uma progressiva adaptação deste tipo de software aos recursos de composição e de publicação das aplicações web. 
+
+Esta seção destaca os trabalhos que exerceram maior influência na concepção deste trabalho e na delimitação da proposta.
+
+\subsubsection{Security of web mashups: A survey \cite{DeRyck2012}}
+O artigo é motivado pelos requisitos de segurança de aplicações web que agregam conteúdo ativo de origens distintas (\textit{web mashups}). Os autores definem um conjunto de categorias de requisitos não-funcionais de segurança e avaliam a conformidade desses requisitos versus funcionalidades do navegador. O critério de classificação estabelecido posiciona as diversas abordagens em quatro graduações que vão desde a separação total de componentes até sua integração completa.
+
+\textbf{Contribuição.} O artigo contribui com a enumeração de requisitos que uma solução voltada à segurança da informação deve atender. Algumas das tecnologias mencionadas podem ter se tornado obsoletas ou de alcance limitado desde que o artigo foi escrito, o que não invalida o resultado pretendido pelos autores, que é considerado ``estado da arte'' \cite{Hedin2014} em pesquisa sobre segurança de aplicações de composição baseadas em Javascript.
 
 
-%é uma preocupação desde o início da exploração comercial da web: o protocolo HTTPS, por exemplo, foi suportado pela primeira vez em 1994 pelo navegador Netscape. Mas é a partir de 1996, com a introdução da linguagem Javascript e de APIs para programação nos navegadores, que as vulnerabilidades de segurança da informação no \textit{front-end} ganharam relevância. A existência de \textit{conteúdo ativo} no navegador inaugurou um legado de preocupações sobre a confiabilidade, as finalidades e os privilégios de execução de scripts, e também dos mecanismos de segurança que ao longo do tempo foram incorporados pela indústria.
+\subsubsection{Toward Principled Browser Security \cite{Yang2013}}
+Os autores analisam os mecanismos tradicionais SOP, CORS e CSP para avaliar suas heurísticas e políticas de segurança que, em troca de flexibilidade para o desenvolvedor de aplicações web, abrem diversas janelas para o vazamento de dados. Partindo dessa condição, os autores propõem um modelo baseado em controle do fluxo da informação capaz de suportar todas as políticas associadas a esses mecanismos, sem apresentar as mesmas vulnerabilidades.
+
+\textbf{Contribuição.} O artigo contribui pela reinterpretação dos mecanismos de segurança tradicionais à luz do IFC, revelando algumas das suas inconsistências e concessões em prol de funcionalidades que podem ser exploradas em ataques. Esse conhecimento fornece insumos para a definição de cenários de testes a serem desenvolvidos neste trabalho.
+
+
+\subsubsection{JSFlow: Tracking information flow in JavaScript and its APIs \cite{Hedin2014}}
+O trabalho, uma continuação de outro de mesma autoria \cite{Hedin2012}, é composto de duas partes: primeiro, os autores descrevem o panorama geral do corpo de conhecimento em segurança da informação no software navegador, detalhando as vulnerabilidades mais comuns; e em segundo, apresentam o projeto JSFlow, que adiciona a capacidade de IFC ao navegador. O trabalho é concluído com um teste da eficácia do projeto.
+
+\textbf{Contribuição.} O projeto JSFlow demonstra alguns dos desafios de uma implementação de IFC no navegador, especialmente a possibilidade de ocorrência dos ``falsos positivos'', ocasiões em que acessos legítimos são impedidos pelo sistema. Em tal situação, o desenvolvedor estaria diante de um impasse e talvez preferisse adotar uma abordagem discricionária, como é a proposta deste trabalho.
+
+
+\subsubsection{Protecting Users by Confining JavaScript with COWL \cite{Stefan2014}}
+Em concordância com o artigo associado \cite{Yang2013}, os autores argumentam que, face às dificuldades que os desenvolvedores encontram para aderir aos mecanismos tradicionais SOP, CSP e CORS, acaba-se optando pela funcionalidade em detrimento da segurança. Isto se manifesta em extensões de navegador solicitando mais permissões do que o necessário, em \textit{web mashups} que requerem autorizações desnecessárias para o usuário, e em notificações de segurança tão constantes que se tornam efetivamente invisíveis. Entendendo que o estado-da-arte da análise do fluxo de informações em navegador é deficiente -- seja porque as ferramentas são incompletas ou porque degradam desempenho --, os autores apresentam o projeto COWL, um navegador construído sobre o software Firefox que implementa, experimentalmente, o controle do fluxo da informação.
+
+\textbf{Contribuição.} O navegador COWL será utilizado como participante de cenários de teste a serem explorados neste trabalho, para que seja avaliada a efetividade de uma implementação de IFC como meio de mitigar as vulnerabilidades identificadas.
 
 
 
+\subsubsection{Information Flow Control for Event Handling and the DOM in Web Browsers \cite{Rajani2015}}
+O artigo explora vazamento de informação em \scripts acionados por eventos do DOM, demonstrando que esse é um efeito de como os navegadores disparam e propagam eventos. Os autores apontam as particularidades da propagação de eventos e suas implicações para o controle do fluxo da informação, implementando, no navegador WebKit, um mecanismo de IFC imune a vazamento de informação derivado do disparo de eventos.
+
+\textbf{Contribuição.} Este artigo coloca em pauta a segurança da informação no âmbito dos eventos do DOM, uma forma sutil de materializar o problema central deste trabalho. Também contribui com a definição de uma máquina de estados derivada do comportamento do navegador na ocorrência de um evento, útil para a concepção de casos de testes.
 
 
+\subsubsection{The Most Dangerous Code in the Browser \cite{Heule2015_Most_Dangerous_Code}}
+O artigo apresenta o desafio, ainda não superado, das vulnerabilidades derivadas do modelo de confiança que os navegadores utilizam para instalar, acionar e atualizar software de extensão. Os autores demonstram como uma extensão pode comprometer a segurança da informação, propondo um modelo de controle mandatório de acesso para mitigar oportunidades de vazamento de dados.
 
-
+\textbf{Contribuição.} Este artigo mapeia as vulnerabilidades associadas às interações entre o DOM e as extensões do navegador. Esse conhecimento é fundamental para que seja possível definir requisitos e cenários de testes que envolvam extensões.
