@@ -1,0 +1,13 @@
+{
+    "latex-workshop.latex.toolchain": [
+        {
+            "command": "xelatex",
+            "args": [
+                "%DOC%.tex"
+            ]
+        }
+    ],
+    "latex-workshop.viewer": "google chrome",
+    "latex-preview.command": "xelatex",
+    "latex-preview.filename": "Projeto.tex"
+}

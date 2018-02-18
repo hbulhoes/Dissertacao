@@ -21,32 +21,30 @@
 	\vspace*{\fill}					% Posição vertical
 	\hrule							% Linha horizontal
 	\begin{center}					% Minipage Centralizado
-	\begin{minipage}[c]{12.5cm}		% Largura
+		\begin{minipage}[c]{12.5cm}		% Largura
+			\setlength{\parskip}{1em}
 
-	\imprimirautor
+			\imprimirautor
+		
+			\hspace{0.5cm} \imprimirtitulo~/~\imprimirautor. \imprimirlocal, \imprimirdata.
 
-	\hspace{0.5cm} \imprimirtitulo  / \imprimirautor. --
-	\imprimirlocal, \imprimirdata-
-
-	\hspace{0.5cm} \pageref{LastPage} p. : il. (algumas color.) ; 30 cm.\\
-
-	\hspace{0.5cm} \imprimirorientadorRotulo~\imprimirorientador\\
-
-	\hspace{0.5cm}
-	\parbox[t]{\textwidth}{\imprimirtipotrabalho~--~\imprimirinstituicao,
-	\imprimirdata.}\\
-
-	\hspace{0.5cm}
-%		1. Palavra-chave1.
-%		2. Palavra-chave2.
-%		I. Orientador.
-%		II. Universidade xxx.
-%		III. Faculdade de xxx.
-%		IV. Título\\
-
-	\hspace{8.75cm} CDU 02:141:005.7\\
-
-	\end{minipage}
+			\hspace{0.5cm} \pageref{LastPage} p. : il. (algumas color.); 30 cm.
+		
+			\hspace{0.5cm} \imprimirorientadorRotulo~\imprimirorientador
+		
+			\hspace{0.5cm} \parbox[t]{\textwidth}{\imprimirtipotrabalho~--~\imprimirinstituicao, \imprimirdata.}
+		
+			\hspace{0.5cm}
+		%		1. Palavra-chave1.
+		%		2. Palavra-chave2.
+		%		I. Orientador.
+		%		II. Universidade xxx.
+		%		III. Faculdade de xxx.
+		%		IV. Título\\
+		
+			\hspace{8.75cm} CDU XX:XXX:XXX.X\\
+	
+		\end{minipage}
 	\end{center}
 	\hrule
 \end{fichacatalografica}
@@ -153,12 +151,14 @@
 \begin{siglas}
   \item[CORS] Cross-Origin Resource Sharing
   \item[CSRF] Cross-Site Request Forgery
+  \item[CSP] Content Security Policy
   \item[DAC] Discretionary Access Control
   \item[DOM] Document Object Model
   \item[IFC] Information Flow Control
   \item[JSON] JavaScript Object Notation
   \item[MAC] Mandatory Access Control
   \item[SOP] Same Origin Policy
+  \item[SRI] Subresource Integrity
   \item[XSS] Cross-Site Scripting
 \end{siglas}
 

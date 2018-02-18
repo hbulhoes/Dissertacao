@@ -1,12 +1,9 @@
 \ProvidesPackage{_estilos}
 
 % ---
-% Atalhos
+% Atalhos: ao final deste arquivo
 % ---
-\newcommand{\script}{\textit{script}}
-\newcommand{\Script}{\textit{Script}}
-\newcommand{\scripts}{\textit{scripts}}
-\newcommand{\Scripts}{\textit{Scripts}}
+
 
 % ---
 % Pacotes fundamentais
@@ -34,6 +31,8 @@
 \usepackage{lscape}				% Possibilita a criação de paginas em formato paisagem
 \usepackage{enumerate}          % permite listas numeradas
 \usepackage{pdfpages}
+\usepackage{hyphenat}
+\usepackage{soul}
 
 \usepackage{iptabntex2}		% Pacote com Customizações do abntex2 + IPT para esta dissertaçao
 
@@ -66,3 +65,27 @@
 %}
 %\makeatother
 % --- 
+
+
+% ---
+% Atalhos
+% ---
+%\font\serifa=cmr at 10pt
+\newcommand{\script}{\textit{script}}
+\newcommand{\Script}{\textit{Script}}
+\newcommand{\scripts}{\textit{scripts}}
+\newcommand{\Scripts}{\textit{Scripts}}
+
+\newcommand{\TODO}{{\LARGE\color{red} TO DO}}
+\newcommand{\tbc}{{\ttfamily\color{red}\textit{To be continued...}}}
+
+\newcommand{\rem}[1]{{\fontsize{0.6em}{0}\selectfont\color{red}\raisebox{1ex}{[#1]}}}
+\newcommand{\dubious}[1]{\hl{#1}}
+
+\newenvironment{obs}%
+{\noindent\ignorespaces\begin{framed}\SingleSpacing\setlength{\parindent}{0cm}\setlength{\parskip}{0em}\tiny}%
+{\end{framed}\par\noindent\ignorespacesafterend}
+
+\newenvironment{todo}%
+{\noindent\ignorespaces\begin{framed}\SingleSpacing\setlength{\parindent}{0cm}\setlength{\parskip}{0em}{\color{red}TO DO...}\tiny}%
+{\end{framed}\par\noindent\ignorespacesafterend}
