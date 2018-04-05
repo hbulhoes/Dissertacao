@@ -1,0 +1,28 @@
+<html>
+<head>
+	<title>Interferência 1</title>
+
+	<style>
+		/* Este é o estilo padrão da aplicação web para elementos DIV
+		   marcadas com a classe "alert"
+		*/
+		DIV.alert {
+			border: 1px solid #f6b73c;
+			background-color: #fff3d4;
+			text-align: center;
+			padding: 2em;
+		}
+	</style>
+
+	<script src="https://widget.host.com/widget.js"></script>
+	<!-- A folha de estilos incoporada redefine o estilo DIV.alert -->
+	<link href="https://widget.host.com/styles.css" rel="stylesheet" />
+</head>
+<body>
+	<div class="alert">
+		Cuidado com as interferências na web!
+	</div>
+
+	<my-widget />
+</body>
+</html>

@@ -1,0 +1,82 @@
+%!TEX root = Projeto.tex
+\subsection{Abordagens para mitigação de riscos}
+
+\subsubsection{Políticas padronizadas}
+
+\paragraph{SOP -- Same Origin Policy}
+A política de segurança SOP foi estabelecida para que os navegadores conseguissem dar suporte a páginas com conteúdo proveniente de domínios mistos com um mínimo de segurança contra o vazamento de informação entre esses domínios \cite{Hill2016}. Através desta política, os navegadores podem impedir um conjunto de ataques conhecido como \textit{cross-site resource forgery}, em que um domínio tenta instruir o navegador a fazer requisições para outro domínio em nome do usuário \cite{OWASP:CSRF}.
+
+O termo \textit{origem} é intercambiável com a palavra \textit{domínio} e ambos representam, para fins desta política, componentes do endereço de URL associado com cada recurso da web -- a saber, o \textit{protocolo}, o \textit{nome do host} e a \textit{porta TCP} de onde o recurso foi transferido \cite{Barth2011}. Os exemplos a seguir representam recursos de mesma origem:
+
+{
+	\small \begin{tabular}{|l|c|l|r|}
+		\hline 
+		Endereço & Protocolo & Nome do \textit{host} & Porta \\ 
+		\hline 
+		\texttt{http://exemplo.com/} & http & exemplo.com & 80 \\ 
+		\hline 
+		\texttt{http://exemplo.com:80/} & http & exemplo.com & 80 \\ 
+		\hline 
+		\texttt{http://exemplo.com/path/file} & http & exemplo.com & 80 \\ 
+		\hline 
+	\end{tabular}
+}
+
+
+Os endereços a seguir representam recursos de origens diferentes:
+
+{\small
+	\begin{tabular}{|l|c|l|r|}
+		\hline 
+		Endereço & Protocolo & Nome do \textit{host} & Porta \\ 
+		\hline 
+		\texttt{http://exemplo.com/} & http & exemplo.com & 80 \\ 
+		\hline 
+		\texttt{http://exemplo.com:8080/} & http & exemplo.com & 8080 \\ 
+		\hline 
+		\texttt{http://www.exemplo.com/} & http & www.exemplo.com & 80 \\ 
+		\hline 
+		\texttt{https://exemplo.com:80/} & https & exemplo.com & 80 \\ 
+		\hline
+		\texttt{https://exemplo.com/} & https & exemplo.com & 443 \\ 
+		\hline
+		\texttt{http://exemplo.org/} & http & exemplo.org & 80 \\ 
+		\hline
+	\end{tabular}
+}
+
+Segundo a SOP, as atividades derivadas da inclusão de recursos de origens mistas são categorizadas em três ações \cite{Ruderman2017}:
+
+\begin{alineas}
+	\item \textbf{Escrita:} atividades deste tipo instruem o navegador para que ocorra alguma forma de navegação entre páginas, o que inclui a interação com \textit{links}, redirecionamento e submissão de formulários. Em geral SOP não restringe este tipo de ação;
+	\item \textbf{Incorporação:} SOP permite que recursos incorporados à página tenham origens mistas. Isto significa que é possível a inclusão de imagens, vídeos, {\scripts} e do elemento \texttt{<iframe>}, entre outros, provenientes de origens mistas e dentro de uma mesma página.
+	\item \textbf{Leitura:} atividades de leitura permitiriam que o conteúdo dos recursos carregados pudesse ser consultado entre origens. SOP permite que um subconjunto de funcionalidades de leitura possam ocorrer entre domínios diferentes.
+\end{alineas}
+
+Um aspecto importante da SOP é o tratamento dado a {\scripts} incorporados. Quando uma página inclui um {\script} proveniente de outras origens, por exemplo pelo uso de uma CDN (\textit{content distribution network}), esses {\scripts} são executados em contexto da origem do documento em que eles foram incorporados. Isto permite, por exemplo, que \textit{frameworks} populares como jQuery e Angular.js possam ser disponibilizados em CDNs sem perder funcionalidades importantes, como a capacidade de iniciar chamadas assíncronas pela técnica AJAX. Esta concessão da SOP, porém, abre a possibilidade de que esses {\scripts}, se adulterados, executem atividades maliciosas sem impedimentos.
+
+\paragraph{CSP -- Content Security Policy}
+CSP foi criada como um complemento à SOP, elevando a capacidade do navegador de servir como plataforma razoavelmente segura para composição de aplicações \textit{mashup} ao estabelecer um protocolo para o compartilhamento de dados entre os componentes da página que residam em domínios diferentes. CSP define um conjunto de diretivas (codificadas como cabeçalhos HTTP) para a definição de \textit{whitelists} -- o conjunto de origens confiáveis -- pelas quais navegador e provedores de conteúdo estabelecem o controle de acesso e o uso permitido de recursos embutidos como {\scripts}, folhas de estilos, imagens e vídeos, entre outros. Através desse protocolo, ataques de XSS que podem ser neutralizados desde que todos os componentes na página sejam aderentes à mesma política de CSP.
+
+\paragraph{CORS -- Cross-Origin Resource Sharing}
+Assim como a CSP, o mecanismo CORS \cite{W3C:CORS} complementa a SOP estabelecendo um conjunto de diretivas (cabeçalhos HTTP) para a negociação de acesso via Ajax/XHR a recursos hospedados em domínios diferentes. CORS determina que exista um vínculo de confiança entre navegadores e provedores de conteúdo, dificultando vazamento de informação ao mesmo tempo em que flexibiliza as funcionalidades das APIs. O uso de CORS permite que os autores de componentes e desenvolvedores de aplicações \textit{mashup} determinem o grau de exposição que cada conteúdo pode ter em relação aos outros conteúdos incorporados.
+
+CSP e CORS são recomendações do comitê W3C \cite{W3C:CSP} \cite{W3C:CORS}, sendo incorporados por todos os navegadores relevantes desde 2016 \cite{CanIUse:CSP} \cite{CanIUse:CORS}.
+
+\paragraph{SRI -- Subresource Integrity}
+
+
+\subsubsection{Abordagens proprietárias}
+\begin{todo}
+Lembra de alguma? Preciso recordar isto...
+\end{todo}
+
+
+\paragraph{Abordagens experimentais}
+\paragraph{JSFLow}
+\paragraph{SessionGuard}
+
+
+\paragraph{Abordagens em processo de padronização}
+\paragraph{COWL}
+\paragraph{CSP Nível 3}

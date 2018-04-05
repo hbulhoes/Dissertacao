@@ -1,0 +1,8 @@
+% !TeX spellcheck = <none>
+%!TEX root = Projeto.tex
+
+\section{Shadow DOM}
+
+A evolução do navegador como \textit{host} de aplicações web baseadas em conteúdo misto põe em evidência algumas deficiências relacionadas ao nível de isolamento necessário para que componentes de diferentes origens possam coexistir sem interferirem entre si no que diz respeito ao comportamento e à apresentação esperada, uma vez que a página web é um meio permissivo e sensível a variações sutis como a ordem de carregamento de \scripts{} e folhas de estilo. As listagens \ref{Src: htmlInterference1} e \ref{Src: htmlInterference2} exploram essas fragilidades. Mitigar esses problemas significa que o desenvolvedor precisa ter pleno conhecimento dos efeitos produzidos pelos componentes que ele incorpora a uma página, para então gerenciar esses efeitos de modo que eles produzam a menor quantidade possível de interferências.
+
+A proposta do mecanismo de Shadow DOM é implementar uma forma padronizada para que o próprio navegador minimize as interferências entre componentes que, de outra forma, iriam causar colisões de nome dos estilos e \scripts{}. A utilização de Shadow DOMs faz com que o modelo de objetos em uma página isole determinadas regiões do DOM em \textit{shadow roots} completamente independentes. Assim, interferências como as observadas em \ref{Src: htmlInterference1} e \ref{Src: htmlInterference2} deixam de existir, como demonstrado nas listagens \ref{Src: htmlNoInterference1} e \ref{Src: htmlNoInterference2}. Shadow DOM, \dubious{proposta em xx/201x,} é implementada pelos navegadores Chrome, Opera e Safari, com suporte planejado para os navegadores Firefox e Microsoft Edge \dubious{para os próximos meses}.
