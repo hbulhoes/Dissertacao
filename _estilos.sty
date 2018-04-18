@@ -35,8 +35,11 @@
 \usepackage{hyphenat}
 \usepackage{soul}
 \usepackage{tabularx}			% Uso de tabelas com largura automática
+\usepackage{framed}				% Inclui o ambiente "framed", mais funcional do que \fbox\parbox
 
-\usepackage{iptabntex2}		% Pacote com Customizações do abntex2 + IPT para esta dissertaçao
+\usepackage{iptabntex2}			% Pacote com Customizações do abntex2 + IPT para esta dissertaçao
+
+\usepackage{trivfloat}			% Pacote para a inclusão de regiões personalizadas e indexáveis
 
 \usepackage[alf,abnt-emphasize=bf,abnt-etal-list=2,abnt-etal-cite=2,abnt-etal-text=2,abnt-repeated-title-omit=yes]{abntex2cite}	% Citações padrão ABNT conforme orientação do IPT
 %\usepackage[alf,abnt-emphasize=bf,abnt-etal-list=2,abnt-etal-cite=2,abnt-repeated-title-omit=yes]{abntex2cite}	% Citações padrão ABNT conforme orientação do IPT
@@ -68,16 +71,21 @@
 %\makeatother
 % --- 
 
-
+\trivfloat{quadro}			% Define o ambiente "quadro" e comandos complementares como "\listofquadros"
+\renewcommand{\listquadroname}{Lista de quadros}
 
 % ---
 % Atalhos
 % ---
 %\font\serifa=cmr at 10pt
+\newcommand{\poe}[1]{\textit{#1}}
+
 \newcommand{\script}{\textit{script}}
 \newcommand{\Script}{\textit{Script}}
 \newcommand{\scripts}{\textit{scripts}}
 \newcommand{\Scripts}{\textit{Scripts}}
+
+\newcommand{\citeinline}[1]{\citeauthor{#1} (\citeyear{#1})}
 
 \newcommand{\TODO}{{\LARGE\color{red} TO DO}}
 \newcommand{\tbc}{{\ttfamily\color{red}\textit{To be continued...}}}
