@@ -20,6 +20,9 @@
 \usepackage{xltxtra}
 \setromanfont[Mapping=tex-text]{Arial}
 \setsansfont[Mapping=tex-text]{Arial}
+\setsansfont[Mapping=tex-text]{Arial}
+\setmonofont{Inconsolata}[Mapping=tex-text]
+\newfontfamily{\urlfont}{Inconsolata}
 % Fonte Arial <
 \usepackage{setspace}			% Permite Configuracao de Espaçamento entre Linhas
 \usepackage{microtype}			% Ajuda a ajustar hifenização
@@ -79,6 +82,7 @@
 % ---
 %\font\serifa=cmr at 10pt
 \newcommand{\poe}[1]{\textit{#1}}
+\newcommand{\location}[1]{\nohyphens{\underline{\urlfont #1}}}
 
 \newcommand{\script}{\textit{script}}
 \newcommand{\Script}{\textit{Script}}

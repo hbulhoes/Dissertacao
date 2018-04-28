@@ -58,35 +58,35 @@ O estudo empírico de \citeauthor{Jang2010}, conduzido em \citeyear{Jang2010} te
 
 \begin{alineas}
 	\item Roubo de \poe{cookies}. Como qualquer \script{} incorporado, código malicioso tem acesso à toda informação contida na página hospedeira, incluindo informação armazenada em \poe{cookies}, e permissão para enviar essa informação para outros agentes pelo uso de alguma das diversas maneiras de se invocar recursos remotos enumeradas na seção \ref{Secao: Vulnerabilidades_MecanismosPropagacao}. \poe{Cookies} expostos dessa maneira podem ser utilizados para forjar requisições posteriores em nome do usuário, agravando o potencial de comprometimento de informação.
-	\item Sequestro do endereço corrente. O endereço URL corrente do navegador é um valor exposto pelo DOM na propriedade \texttt{document.location}. Todo código Javascript tem poder de ler e modificar essa propriedade, cuja alteração causa uma imediata carga do endereço especificado. Um \script{} pode aproveitar-se desse comportamento para redirecionar informação contida na página.
+	\item Sequestro do endereço corrente. O endereço URL corrente do navegador é um valor exposto pelo DOM na propriedade |document.location|. Todo código Javascript tem poder de ler e modificar essa propriedade, cuja alteração causa uma imediata carga do endereço especificado. Um \script{} pode aproveitar-se desse comportamento para redirecionar informação contida na página.
 	\item Espionagem de histórico. Embora o histórico de navegação propriamente dito, correspondente à sequência de URLs visitadas, não seja exposto pelo DOM, uma forma de ataque conhecida como XSHM \poe{(Cross Site History Manipulation)} \cite{OWASP:XSHM} revela informação suficiente para que seja possível deduzir, por exemplo, se o usuário fez \poe{login} em determinada aplicação-alvo. Um \script{} pode valer-se dessa dedução para emitir requisições mal-intencionadas para esse alvo em nome do usuário corrente.
 	\item Observação do comportamento do usuário. \Scripts{} têm a capacidade de registrar código ``ouvinte'' de eventos derivados da interação do usuário com a página web, como movimentos de \poe{mouse}, cliques, acionamento de teclado e rolagem de tela. Essa informação pode ser retransmitida para outros agentes na internet, que poderão acompanhar as ações do usuário em tempo real.
 \end{alineas}
 
 \citeauthor{Jang2010} afirmam que as causas que viabilizam a existência desses fluxos são a natureza dinâmica da linguagem Javascript, sua falta de mecanismos de isolamento entre \scripts{}, e a granularidade incoerente das políticas como a SOP.
 
-\begin{todo}
-Pontos a considerar:
+% \begin{todo}
+% Pontos a considerar:
 
-\begin{alineas}
-	\item O navegador da web é um cliente da internet.
-	\item O ciclo de vida de uma página é "curto" (cada página, uma aplicação diferente? um contexto de execução diferente?)
-	\item Onde está a informação no navegador, e qual sua duração possível?
-	\begin{alineas}
-		\item Endereço (URL) corrente
-		\item Requisição (pode ser da página como de "sub-recursos" como imagens, iframes, scripts, estilos, xhr...)
-		\item Resposta
-		\item Estrutura da página (DOM)
-		\item Eventos do navegador/DOM
-		\item Closures
-		\item Pilha de chamadas
-		\item Extensões do navegador
-		\item Caches
-		\item Cookies
-		\item Local DB
-		\item Em HTTPS, temos mais fluxos?
-	\end{alineas}
-\end{alineas}
+% \begin{alineas}
+% 	\item O navegador da web é um cliente da internet.
+% 	\item O ciclo de vida de uma página é "curto" (cada página, uma aplicação diferente? um contexto de execução diferente?)
+% 	\item Onde está a informação no navegador, e qual sua duração possível?
+% 	\begin{alineas}
+% 		\item Endereço (URL) corrente
+% 		\item Requisição (pode ser da página como de "sub-recursos" como imagens, iframes, scripts, estilos, xhr...)
+% 		\item Resposta
+% 		\item Estrutura da página (DOM)
+% 		\item Eventos do navegador/DOM
+% 		\item Closures
+% 		\item Pilha de chamadas
+% 		\item Extensões do navegador
+% 		\item Caches
+% 		\item Cookies
+% 		\item Local DB
+% 		\item Em HTTPS, temos mais fluxos?
+% 	\end{alineas}
+% \end{alineas}
 
-Então será possível indicar quais dos fluxos estão protegidos contra vazamento de informação, e como estão. E consequentemente quais fluxos não estão cobertos.
-\end{todo}
+% Então será possível indicar quais dos fluxos estão protegidos contra vazamento de informação, e como estão. E consequentemente quais fluxos não estão cobertos.
+% \end{todo}

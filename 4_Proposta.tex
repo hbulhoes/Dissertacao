@@ -2,9 +2,13 @@
 %!TEX root = Projeto.tex
 \chapter{Proposta}
 
-\input{3_1_APIShadowDOM}
-\input{3_2_CasosDeTeste}
-\input{3_3_ApresentacaoJstestMe}
+Esta dissertação propõe um mecanismo discricionário contra vazamento de informação contida no DOM baseado em duas capacidades: (1) impedir que {\scripts} encontrem nós específicos do DOM via APIs de manipulação de árvore como |document.getElementById()|, |ParentNode.querySelector()| e |Element.childNodes| e (2) impedir que {\scripts} sejam notificados da ocorrência de eventos do DOM originários de nós específicos. Entretanto, para que a informação derivada dessas funcionalidades possa ser útil aos autores de aplicações web, o mecanismo proposto oferece uma API proprietária que atua como \poe{proxy} ante os nós ocultados.%, \dubious{caracterizável pelos aspectos X, Y e Z das políticas discricionárias de segurança da informação}.
+
+As próximas seções encarregam-se de apresentar o mecanismo em termos de sua especificação e de seu funcionamento, descrevendo as tecnologias em que ele é fundamentado e sua aptidão frente aos casos de uso levantados na \dubious{seção X}.
+
+\input{4_1_APIShadowDOM}
+\input{4_2_CasosDeTeste}
+\input{4_3_ApresentacaoJstestMe}
 
 \section{Roteiro para a elaboração da proposta}
 
