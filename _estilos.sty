@@ -39,6 +39,7 @@
 \usepackage{soul}
 \usepackage{tabularx}			% Uso de tabelas com largura automática
 \usepackage{framed}				% Inclui o ambiente "framed", mais funcional do que \fbox\parbox
+\usepackage{tikz}				% Para definição do comando \circled logo abaixo...
 
 \usepackage{iptabntex2}			% Pacote com Customizações do abntex2 + IPT para esta dissertaçao
 
@@ -77,6 +78,7 @@
 \trivfloat{quadro}			% Define o ambiente "quadro" e comandos complementares como "\listofquadros"
 \renewcommand{\listquadroname}{Lista de quadros}
 
+
 % ---
 % Atalhos
 % ---
@@ -104,3 +106,5 @@
 \newenvironment{todo}%
 {\noindent\ignorespaces\begin{framed}\SingleSpacing\setlength{\parindent}{0cm}\setlength{\parskip}{0em}{\color{red}TO DO...}\tiny}%
 {\end{framed}\par\noindent\ignorespacesafterend}
+
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{\node[shape=circle,draw,inner sep=2pt] (char) {#1};}}

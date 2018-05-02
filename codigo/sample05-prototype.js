@@ -12,7 +12,7 @@ var objetoHerdeiro = Object.create(myClass);
 objetoHerdeiro.nomeAtribuido = 'Teste';
 
 // (*\underline{objetoHerdeiro}*) herda as funções definidas em (*\underline{myClass}*) e redefine o valor
-// do membro (*\underline{nomeAtribuido}\*). A função (*\underline{exibirNome()}*), por exemplo, faz referência
+// do membro (*\underline{nomeAtribuido}\*). A função (*\underline{exibirNome}*), por exemplo, faz referência
 // a esse membro, inicializado como string vazia em (*\underline{myClass}*), mas retornado
 // como 'Teste' na chamada de método a seguir:
 objetoHerdeiro.exibirNome();
