@@ -17,7 +17,7 @@ Tornando inacessível a propriedade |Element.shadowRoot|, o método |Element.att
 
 \subsection{Interceptação de métodos nativos do ambiente de execução}
 
-A linguagem Javascript apresenta \textit{herança prototípica} como mecanismo para compartilhar estrutura, comportamento e estado entre os objetos que participam de um mesmo relacionamento denominado de \textit{cadeia prototípica}. Por esse mecanismo, a linguagem Javascript admite o uso de abstrações de classes, a exemplo de linguagens estáticas como Java e C++ \cite{ECMA2017}. Porém, ao contrário dessas linguagens, Javascript possibilita a redefinição dinâmica dos membros dos protótipos/classes. A listagem \ref{Src: jsPrototypicalInheritance} exemplifica esse mecanismo.
+A linguagem Javascript apresenta \textit{herança prototípica} como mecanismo para compartilhar estrutura, comportamento e estado entre os objetos que participam de um mesmo relacionamento denominado de \textit{cadeia prototípica}. Por esse mecanismo, a linguagem Javascript admite o uso de abstrações de classes, a exemplo de linguagens estáticas como Java e C++ \cite[seção 4.2.1]{ECMA2017}. Porém, ao contrário dessas linguagens, Javascript possibilita a redefinição dinâmica dos membros dos protótipos/classes. A listagem \ref{Src: jsPrototypicalInheritance} exemplifica esse mecanismo.
 
 %Objetos em Javascript são entidades de estrutura dinâmica, comportando-se como dicionários ou \poe{hashes} de informação. Por meio de herança prototípica, objetos em Javascript são definidos como uma composição formada tanto pelos atributos herdados da cadeia de protótipos quanto dos atributos associados diretamente ao objeto.
 
@@ -27,12 +27,40 @@ A linguagem Javascript apresenta \textit{herança prototípica} como mecanismo p
 	caption={Demonstração de herança prototípica em Javascript}]
 	{codigo/sample05-prototype.js}
 
-Uma consequência da flexibilidade oferecida pela herança prototípica é que um {\script} pode modificar os métodos de um protótipo de forma que o acionamento desses métodos seja encapsulado por código arbitrário. Essa capacidade de interceptação permite que métodos sejam instrumentados, monitorados ou corrompidos para quaisquer fins. O exemplo na listagem \ref{Src: jsMethodHijacking} demonstra como o método |Number.toString()| pode ser desvirtuado para retornar informação incorreta -- neste caso, o método sempre retornará a mesma \poe{string}, ``42''.
+Uma consequência da flexibilidade oferecida pela herança prototípica é que um {\script} pode modificar os métodos de um protótipo de forma que o acionamento desses métodos seja substituído ou encapsulado por código arbitrário. Essa capacidade de interceptação permite que métodos sejam instrumentados, monitorados ou mesmo corrompidos sem que o \poe{runtime} da linguagem levante impedimentos. O exemplo na listagem \ref{Src: jsMethodHijacking} demonstra como o método |Number.toString()| pode ser desvirtuado para retornar informação incorreta -- neste caso, o método sempre retornará a mesma \poe{string}, ``42''.
 
 \lstinputlisting[language=JavaScript,
 	inputencoding=utf8,
 	label={Src: jsMethodHijacking},
-	caption={Exemplo de método nativo interceptado por um script}]
+	caption={Exemplo de redefinição do método toString() do objeto Number}]
 	{codigo/sample06-hijack.js}
 
-\citeinline{Magazinius2012}, em seu estudo sobre a efetividade das estratégias empregadas por \poe{sandboxes} como Google Caja e Facebook Javascript, denomina a manipulação mal-intencionada da cadeia de herança como ``envenenamento do protótipo'' (\poe{prototype poisoning}, no artigo original).
+Virtualmente qualquer dos membros de objetos em Javascript, incluindo propriedades e métodos dos objetos primitivos |Boolean|, |Number|, |String| e |Object|, podem ser redefinidos em suas cadeias de herança. \citeinline{Magazinius2012}, em seu estudo sobre a efetividade das estratégias empregadas por \poe{sandboxes} como Google Caja e Facebook Javascript, denomina a redefinição mal-intencionada da cadeia de herança como ``envenenamento do protótipo'' (\poe{prototype poisoning}, no artigo original). É por esse motivo que a mera utilização de |{mode: 'closed'}| como parâmetro do método |Element.attachShadow()| não é suficiente para tornar invioláveis as \poe{shadow roots} que forem criadas com a intenção de serem ``ocultas'', pois a redefinição desse método, exemplificada pela listagem \ref{Src: jsShadowHijacking}, tem acesso todas as referências às \poe{shadow roots} criadas durante o ciclo de vida de uma página, podendo ler e modificar o conteúdo tido como protegido pelo desenvolvedor.
+
+\lstinputlisting[language=JavaScript,
+	inputencoding=utf8,
+	label={Src: jsShadowHijacking},
+	caption={Exemplo de interceptação do método Element.attachShadow()}]
+	{codigo/sample07-attachShadowHijack.js}
+
+\subsubsection{Uma estratégia para neutralizar a redefinição de APIs}
+
+No \poe{runtime} de Javascript, a ordem de declaração dos {\scripts} determina sua sequência de execução, a qual ocorre em série -- é garantido que apenas um {\script} seja executado em um dado momento \cite[seção 8.3]{ECMA2017}. Esse comportamento sustenta a elaboração de uma estratégia para mitigação dos riscos inerentes à interceptação dinâmica dos métodos em Javascript: o primeiro {\script} a ser executado poderia armazenar referências aos métodos que lhe forem importantes, em uma rotina de \poe{setup}. Desta forma, mesmo se os {\scripts} carregados subsequentemente efetuarem sobrescrita de protótipos, as implementações originais dos métodos requeridos estarão a salvo da manipulação. Para tanto, as seguintes garantias precisam ser obedecidas:
+
+\begin{alineas}
+	\item Garantia de que um {\script} confiável de \poe{setup} seja o primeiro bloco de código Javascript carregado pelo navegador na página web.
+	\item Garantia de que os métodos de que o desenvolvedor necessite para interação com informações sensíveis sejam referenciados por variáveis locais do {\script} de \poe{setup}.
+	\item Garantia de que as chamadas aos métodos referenciados ocorram por via indireta, ignorando os |prototypes| de que fizerem parte.
+\end{alineas}
+
+A terceira garantia depende da invocação de funções por meio do método |Function.apply(thisObj, methodFn)| em detrimento de chamadas diretas como |thisObj.methodFn()|. A listagem \ref{Src: jsMethodProtection} fornece um exemplo de implementação dessa estratégia.
+
+\lstinputlisting[language=JavaScript,
+	inputencoding=utf8,
+	label={Src: jsMethodProtection},
+	caption={Implementação da estratégia de chamada indireta de métodos}]
+	{codigo/sample08-method-protection-strategy.js}
+
+
+%\subsubsection{Falhas na estratégia de neutralização}
+Ainda que o algoritmo de neutralização apresente certa capacidade de neutralizar os riscos de envenenamento do protótipo de objetos, sua implementação está sujeita a outros riscos. Em primeiro lugar, a garantia de que determinado {\script} seja carregado antes dos demais é, na prática, frágil. Os {\scripts} interessados nessa proteção podem não estar sob controle do autor de uma aplicação web, especialmente se fizerem parte de soluções de terceiros cuja ordem de carregamento e execução seja imprevisível \poe{a priori}. Ademais, em segundo lugar, é plenamente possível que um {\script} mal-intencionado tome controle exatamente do método |Function.apply()|, o que tornaria vulneráveis todas as chamadas de função dependentes desse método. Por esses motivos, uma outra estratégia deve ser proposta -- uma que seja mais tolerante quanto às garantias necessárias, porém mais robusta em ambientes de execução hostis.
