@@ -62,5 +62,56 @@ A terceira garantia depende da invocação de funções por meio do método |Fun
 	{codigo/sample08-method-protection-strategy.js}
 
 
-%\subsubsection{Falhas na estratégia de neutralização}
-Ainda que o algoritmo de neutralização apresente certa capacidade de neutralizar os riscos de envenenamento do protótipo de objetos, sua implementação está sujeita a outros riscos. Em primeiro lugar, a garantia de que determinado {\script} seja carregado antes dos demais é, na prática, frágil. Os {\scripts} interessados nessa proteção podem não estar sob controle do autor de uma aplicação web, especialmente se fizerem parte de soluções de terceiros cuja ordem de carregamento e execução seja imprevisível \poe{a priori}. Ademais, em segundo lugar, é plenamente possível que um {\script} mal-intencionado tome controle exatamente do método |Function.apply()|, o que tornaria vulneráveis todas as chamadas de função dependentes desse método. Por esses motivos, uma outra estratégia deve ser proposta -- uma que seja mais tolerante quanto às garantias necessárias, porém mais robusta em ambientes de execução hostis.
+\subsubsection{Falhas na estratégia de neutralização}
+Ainda que o algoritmo de neutralização apresente certa capacidade de neutralizar os riscos de envenenamento do protótipo de objetos, sua implementação está sujeita a outros riscos. Em primeiro lugar, a garantia de que determinado {\script} seja carregado antes dos demais é, na prática, frágil. Os {\scripts} interessados nessa proteção podem não estar sob controle do autor de uma aplicação web, especialmente se fizerem parte de soluções de terceiros cuja ordem de carregamento e execução seja imprevisível \poe{a priori}. Ademais, em segundo lugar, é plenamente possível que um {\script} mal-intencionado tome controle exatamente do método |Function.apply()|, o que tornaria vulneráveis todas as chamadas de função dependentes desse método. A listagem \ref{Src: jsApplySubversion} evidencia essa modalidade de interceptação, demonstrando a relativa simplicidade de se contornar a estratégia proposta.
+
+\lstinputlisting[language=JavaScript,
+	inputencoding=utf8,
+	label={Src: jsApplySubversion},
+	caption={Subversão do método Function.apply() como meio de ganhar acesso às \poe{shadow roots} fechadas}]
+	{codigo/sample09-apply-method-subversion.js}
+
+Pelas fragilidades apontadas, uma outra estratégia deve ser proposta -- uma que seja mais tolerante quanto às garantias necessárias, porém mais robusta em ambientes de execução hostis.
+
+
+\subsection{Detectando a interceptação de métodos em Javascript}
+
+Em vista das características dinâmicas da linguagem Javascript, e em consequência à tolerância que o navegador demonstra para com todos os {\scripts} incorporados em uma página web, este trabalho toma como premissa que não é factível estabelecer um ambiente de execução imune às diversas maneiras nas quais as APIs de Javascript podem ser exploitadas, especialmente quando o objetivo do agente mal-intencionado é facilitar o vazamento de informação. Ao contrário, este trabalho propõe uma abordagem que pode contribuir para que as aplicação web não sejam expostas aos riscos derivados de {\scripts} que interfiram na cadeia de herança prototípica. Por meio dessa abordagem, a aplicação determina, tão cedo quanto possível no ciclo de vida da página, se as APIs de que depende foram de algum modo comprometidas e, em caso positivo, que nenhuma informação confidencial seja exposta. Esta é uma estratégia de \poe{early fail}: se determinadas condições não forem atendidas na inicialização da página, que nenhuma operação posterior tenha a oportunidade de ser executada.
+
+Para tanto, é empregado um dispositivo de software que detecta a ocorrência de interceptação de métodos em Javascript. Esse dispositivo corresponde a um processo capaz de avaliar, em tempo de inicialização, se determinados métodos de API tiveram sido substituídos por interceptadores, o que para os propósitos do dispositivo os caracteriza como não-confiáveis. A existência de ao menos um método não-confiável é suficiente para que o dispositivo acuse uma falha de inicialização, a partir do que a aplicação web poderá desviar o fluxo para uma condição de erro. A não-ocorrência de falha, por sua vez, significa que os métodos avaliados não foram interceptados, sendo considerados como confiáveis. O diagrama 3.1.2 ilustra a sequência de atividades desempenhadas durante o processo de detecção de métodos não-confiáveis.
+
+[DIAGRAMA 3.1.2]
+
+A implementação do dispositivo de detecção se baseia na conversão implícita de valores passados como argumento para os métodos avaliados. O dispositivo é capaz de detectar interceptação em métodos que esperam ao menos um parâmetro do tipo |String| e que, para tais parâmetros que receberem como argumentos valores de outros tipos, o método tente convertê-los em \poe{strings}. Em Javascript, todo objeto herda do protótipo |Object| o método |toString()| \cite[seção 19.1]{ECMA2017}, cujo propósito é criar uma representação textual do valor intrínseco de um objeto. Embora esse propósito seja distinto de uma ``conversão de tipo'', este é o efeito observado em situações como a do seguinte trecho de código:
+
+\begin{lstlisting}[language=javascript]
+var	o = { toString: function () { return 'Hello, world'; } };
+document.write(o);
+// A expressão "Hello, world" terá sito escrita na página web
+\end{lstlisting}
+
+Implicitamente o método |document.write()| ``converte'' o argumento |o| em um valor |String| por meio da chamada de seu método |toString()| (o qual, de fato, sobrescreve o método |toSring()| herdado de |Object| através da cadeia prototípica). Esse padrão de conversão é empregado em outras APIs de Javascript e também em operações como a de concatenação de \poe{strings}:
+
+\begin{lstlisting}[language=javascript]
+var	s = o + ' - have a nice day!';
+// O conteúdo da variável s é "Hello, world - have a nice day"
+\end{lstlisting}
+
+Para fins do dispositivo de detecção de interceptação, um objeto não-textual (denominado \textit{vetor}) é passado como argumento para os métodos sob avaliação (denominados \textit{suspeitos}) e estes, ao realizarem a conversão do vetor em |String|, irão implicitamente acionar o método |vetor.toString()|. Mais do que devolver uma representação textual do vetor, a implementação de |toString()| tem a responsabilidade de obter informações sobre o contexto de execução do método suspeito e, a partir disso, inferir se esse contexto pertence a uma interceptação de API. Essa inferência se baseia na profundidade da pilha de chamadas (\poe{call stack}) em termos do número de chamadas aninhadas (\poe{stack frames}). O dispositivo emprega uma heurística cuja premissa é de que deve existir uma número predeterminado de \poe{stack frames} entre a chamada de |vetor.toString()| e a chamada do próprio método suspeito. Os experimentos demonstram que a profundidade de pilha esperada para todos os métodos avaliados é 1: um número maior de \poe{frames} significa que há mais chamadas em curso, caracterizando a interceptação do método suspeito. A listagem \ref{Src: jsDetectionVector} demonstra a implementação de vetor utilizada nos experimentos deste trabalho.
+
+\lstinputlisting[language=JavaScript,
+	inputencoding=utf8,
+	label={Src: jsDetectionVector},
+	caption={Implementação do vetor de detecção de métodos interceptados}]
+	{codigo/sample10-detection-vector.js}
+
+
+O método |vetor.toString()|, núcleo do dispositivo de detecção, avalia a profundidade da pilha de chamadas pela inspeção da propriedade |stack| de um objeto |Error|. Embora não seja padronizada, a propriedade |Error.stack| apresenta comportamento consistente entre os mecanismos de execução de Javascript, retornando uma sequência de linhas de texto correspondentes às \poe{stack frames} -- um efeito demonstrado na listagem \ref{Src: jsCallStackSampler}. Assim, a contagem de linhas de texto contidas no \poe{stack trace} é o resultado tomado como profundidade da pilha.
+
+Experimentos evidenciam que, em diferentes plataformas\footnote{NodeJS v8.9.4; Chrome 66; Microsoft Edge estão em conformidade entre si; notável exceção do Firefox Quantum 59.}, não é possível substituir a implementação nativa da propriedade |Error.stack|. Neste trabalho, foram desenvolvidos {\scripts} que tentaram, sem sucesso, interceptar e modificar o conteúdo de |Error.prototype.stack|, além da substituição do próprio construtor e protótipo do objeto |Error|. Independentemente dessas tentativas, os \poe{runtimes} de Javascript reforçam uma característica de previsibilidade no comportamento do objeto |Error|. Essa constatação dá segurança para que o vetor utilizado pelo dispositivo seja considerado confiável em sua capacidade de detectar variações na pilha de chamadas.
+
+\lstinputlisting[language=JavaScript,
+	inputencoding=utf8,
+	label={Src: jsCallStackSampler},
+	caption={Diferentes conteúdos de Error.stack quando se consideram aninhamentos mais profundos de chamadas de função}]
+	{codigo/sample11-call-stack-sampler.js}
